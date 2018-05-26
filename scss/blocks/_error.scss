@@ -1,0 +1,6 @@
+@import '../theme';
+
+.error {
+  border: $basePadding/2 solid $cError;
+  padding:  $basePadding/2;
+}

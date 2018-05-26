@@ -1,0 +1,36 @@
+@import '../theme';
+
+.errorBoundary {
+  border: $basePadding/2 solid $cError;
+  padding:  $basePadding/2;
+
+  &-title {
+    font-size: 1.65rem;
+    margin-bottom: $basePadding/2;
+  }
+
+  &-error {
+    font-size: 1.3rem;
+    margin-bottom: $basePadding/2;
+  }
+
+  &-errorStack {
+    font-size: 1.3rem;
+    margin-bottom: $basePadding/2;
+    white-space: pre;
+  }
+
+  &-subTitle {
+    font-size: 1.5rem;
+    margin-bottom: $basePadding/2;
+  }
+
+  &-componentStack {
+    font-size: 1.3rem;
+    white-space: pre;
+  }
+
+  &-errorText {
+    font-size: 1.3rem;
+  }
+}

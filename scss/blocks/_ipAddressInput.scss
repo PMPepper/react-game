@@ -1,0 +1,15 @@
+@import '../theme';
+
+//TODO is this needed?
+
+.ipAddressInput {
+
+  &_valid_invalid {
+    background: #F99;
+  }
+
+  &_valid_valid {
+    background: #9F9;
+  }
+
+}

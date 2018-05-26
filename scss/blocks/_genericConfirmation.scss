@@ -1,0 +1,8 @@
+@import '../theme';
+
+
+.genericConfirmation {
+  &-question {
+    margin-bottom: $basePadding/2;
+  }
+}

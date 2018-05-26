@@ -1,0 +1,60 @@
+@import '../theme';
+
+.outputBar {
+  padding: $basePadding/4;
+  position: relative;
+  background: $pallet25;
+  text-align: left;
+  min-height: 3.3rem;
+
+  &_noBG {
+    background: transparent;
+  }
+
+  &-title {
+    color: $pallet4;
+    font-size: 1.3rem;
+    position: relative;
+    z-index: 2;
+    white-space: pre;
+    display: block;
+  }
+
+  &-value {
+    font-size: 2.1rem;
+    line-height: 1;
+    position: relative;
+    z-index: 2;
+    white-space: pre;
+    color: $pallet29;
+    margin-right: 3rem;
+
+    &_customFractionText {
+      margin-right: 10rem;
+    }
+
+    &_small {
+      font-size: 1.65rem;
+    }
+
+    &_colour {
+      &_green {
+        color: $pallet27;
+      }
+
+      &_orange {
+        color: $pallet28;
+      }
+    }
+  }
+
+  &-fract {
+    position: absolute;
+    right: $basePadding/4;
+    bottom: $basePadding/4;
+    font-size: 1.3rem;
+    color: $pallet3;
+    line-height: 1.2;
+    z-index: 2;
+  }
+}

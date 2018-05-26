@@ -1,0 +1,119 @@
+@import '../transition-mixins';
+@import '../zIndexes';
+@import '../theme';
+
+.modal {
+  $transitionTime: 0.3s;
+  position: absolute;
+  z-index: $modalZIndex;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+
+  &-content {
+    @include transitionFadeVisible($transitionTime, $transitionTime, ease);
+
+    position: absolute;
+    z-index: 2;
+    top: 6rem;
+    left: $basePadding;
+    right: $basePadding;
+    max-width: 80rem;
+    margin: 0 auto;
+    max-height: calc(100vh - 12rem);
+    min-width: 32rem - ($basePadding*2);
+    background-color: #FFF;
+    outline: none;
+    display: flex;
+    flex-direction: column;
+    border: 0.1rem solid $pallet24;
+    border-bottom: 0;
+    box-shadow: 0 0.5rem 0 0 $pallet4;
+
+    @include upToBreakpoint('phablet') {
+      top: $basePadding;
+      left: $basePadding;
+      right: $basePadding;
+    }
+
+    &_error{
+      box-shadow: 0 0.5rem 0 0 $cError;
+    }
+
+    &_warning{
+      box-shadow: 0 0.5rem 0 0 $pallet28;
+    }
+
+    &_info {
+      box-shadow: 0 0.5rem 0 0 $pallet10;
+    }
+
+    &_success {
+      box-shadow: 0 0.5rem 0 0 $cSuccess;
+    }
+
+    &_thin {
+      max-width: 40rem;
+    }
+
+    &_wide {
+      max-width: 120rem;
+    }
+  }
+  &-section {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &-header{
+    padding: $basePadding*0.5 $basePadding*2 $basePadding*0.5 $basePadding*0.5;
+    font-size: 2.1rem;
+    font-weight: bold;
+    line-height: 1;
+    position: relative;
+    background: $pallet25;
+    border-bottom: 0.1rem solid $pallet24;
+  }
+
+  &-title {
+    display: inline;
+  }
+
+  &-icon {
+    margin-right: $basePadding/2;
+  }
+
+  &-body {
+    padding: $basePadding*0.5;
+    font-size: 2rem;
+    overflow: auto;
+
+    &_bg_dark {
+      background: $pallet22;
+    }
+  }
+
+  &-closeBtn {
+    @include themeCloseBtn();
+  }
+
+  &-retryBtn {
+    @include themeBtn($size: normal, $light: false);
+
+    display: block;
+    margin: $basePadding auto 0;
+  }
+
+  &-overlay {
+    @include transitionFadeVisible($transitionTime, $transitionTime, ease);
+
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}

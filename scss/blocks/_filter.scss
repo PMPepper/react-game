@@ -1,0 +1,51 @@
+@import '../theme';
+
+.filter {
+  cursor: pointer;
+  display: inline-block;
+  margin-left: $basePadding/2;
+  font-size: 1.3rem;
+  color: $pallet29;
+  position: relative;
+  margin-top: $basePadding/2;
+
+  &:first-child {
+    margin-left: 0;
+  }
+
+  &-applyFilter {
+    padding: $basePadding/2;
+    background: #FFF;
+    border: 0.2rem solid $pallet29;
+
+    @include themeBlockInteraction();
+  }
+
+  &-editSettings {
+    color: $pallet27;
+    padding: $basePadding/2 (($basePadding/2) + 2rem) $basePadding/2 $basePadding/2;
+    background: rgba($pallet27, 0.2);
+    border: 0.2rem solid $pallet27;
+
+    max-width: 20rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    @include themeBlockInteraction($mouseColour: rgba($pallet27, 0.1));
+  }
+
+  &-clearSettings {
+    color: $pallet27;
+    position: absolute;
+    z-index: 2;
+    right: 0;
+    top: 48%;
+    transform: translate(0, -50%);
+    border: 0;
+    background: transparent;
+    padding: $basePadding/2;
+
+    @include themeTextInteraction($mouseColour: darken($pallet27, 10%));
+  }
+}

@@ -1,0 +1,97 @@
+
+
+
+.progress {
+  width: 100%;
+  height: 100%;
+
+  &_task {
+    $borderRadius: 0.3rem;
+
+    @mixin barStyle() {
+      background-color: #DDD;
+      border-radius: $borderRadius;
+      box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.25) inset;
+    }
+
+    @mixin valueStyle() {
+      $stripeWidth: 1.2rem;
+      $stripeGap: 1rem;
+
+      background-image:
+        repeating-linear-gradient(-45deg, transparent, transparent $stripeGap, rgba(0, 0, 0, .1) $stripeGap, rgba(0,0, 0, .1) $stripeWidth+$stripeGap),
+        linear-gradient(to top, rgba(255, 255, 255, .25), rgba(0, 0, 0, .25)),
+        linear-gradient(to left, #09c, #f44);
+    }
+
+    vertical-align: top;
+    appearance: none;
+    
+    //needed for firefox
+    background: transparent;
+    border: none;
+
+    &::-webkit-progress-bar { @include barStyle(); }
+
+    &::-moz-progress-bar { @include valueStyle(); }
+    &::-webkit-progress-value { @include valueStyle(); }
+
+    border-radius: $borderRadius;
+    overflow: hidden;
+
+    //Fallback style
+    color: #33C;
+  }
+
+  &_full {
+
+    @mixin barStyle() {
+      background: transparent;
+      //background-color: #DDD;
+      //box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.25) inset;
+    }
+
+    @mixin valueStyle() {
+      background: rgba($pallet29, 0.2);
+      border-bottom: 0.1rem solid $pallet29;
+
+
+
+
+      @include modifyBEMSelector((modifiers: (colour: 'orange'))) {
+        background: rgba($pallet28, 0.2);
+        border-bottom: 0.1rem solid $pallet28;
+      }
+
+      @include modifyBEMSelector((modifiers: (colour: 'green'))) {
+        background: rgba($pallet27, 0.2);
+        border-bottom: 0.1rem solid $pallet27;
+      }
+    }
+
+    vertical-align: top;
+    appearance: none;
+
+    //needed for firefox
+    background: transparent;
+    border: none;
+
+    &::-webkit-progress-bar { @include barStyle();  }
+
+    &::-moz-progress-bar { @include valueStyle(); }
+    &::-webkit-progress-value { @include valueStyle(); }
+
+    border-radius: 0;
+    overflow: hidden;
+
+    //Fallback style
+    color: $pallet29;
+
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+}

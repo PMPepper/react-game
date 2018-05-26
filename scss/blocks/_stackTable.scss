@@ -1,0 +1,157 @@
+@import '../theme';
+
+
+.stackTable {
+  //@include themeStackTable;
+  margin-top: $basePadding/2;
+
+  $stackedArrowWidth: 1rem;
+  $stackedArrowHeight: 0.5rem;
+
+  &-item {
+    @include themeDL($term: 'dt', $definition: 'dd', $termWidth: 10rem);
+
+    &_disabled {
+      opacity: 0.5;
+    }
+
+    &-dt {
+      &-btn {
+        border: 0;
+        padding: 0;
+        background: transparent;
+        text-align: left;
+      }
+
+      position: relative;
+
+      @include modifyBEMSelector((modifiers: (sort: asc))) {
+        &:after {
+          @include triangle(bottom, currentColor, $stackedArrowWidth, $stackedArrowHeight);
+          left: 10rem - $stackedArrowWidth - $basePadding/4;
+
+          position: absolute;
+          top: 50%;
+          margin-top: 0;
+
+          transform: translate(0,-50%);
+          transform-origin: center;
+
+          //transitions don't work reliably because sometimes elements are
+          //re-created in the DOM, meaning they aren't animated
+          //transition: transform 0.15s ease-out;
+        }
+      }
+
+      @include modifyBEMSelector((modifiers: (sort: desc))) {
+        &:after {
+          @include triangle(bottom, currentColor, $stackedArrowWidth, $stackedArrowHeight);
+          left: 10rem - $stackedArrowWidth - $basePadding/4;
+
+          position: absolute;
+          top: 50%;
+          margin-top: 0;
+
+          transform: translate(0,-50%) rotate(180deg);
+          transform-origin: center;
+          //transition: transform 0.15s ease-out;
+        }
+      }
+    }
+
+    &-dd {
+      &_dataFull {
+        padding: 0;
+      }
+
+      &_dataFormField {
+        padding: ($basePadding/8) 0;
+        min-height: 3.2rem;
+      }
+    }
+  }
+
+
+
+  &-list-item {
+    margin-top: $basePadding / 2;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  &-slideReveal {
+
+    &-holder {
+      background: $pallet0;
+    }
+
+    &-inner {
+      padding: ($basePadding/4) ($basePadding/4) - 0.1rem;
+      border: 0.1rem solid $pallet26;
+      border-width: 0 0.1rem 0.1rem;
+    }
+  }
+
+  &-toggleSlideReveal {
+    border: 0.1rem solid $pallet26;
+    border-top: 0;
+    background: none;
+    display: block;
+    width: 100%;
+    height: $basePadding;
+    background: $pallet22;
+    position: relative;
+
+    @include themeTextInteraction($mouseColour: $pallet5);
+
+    &:after {
+      @include triangle(bottom, currentColor, $basePadding, $basePadding/2);
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      margin: (-$basePadding/4) (-$basePadding/2);
+      transform: rotate(0deg);
+    }
+
+    @include modifyBEMSelector((modifiers: (isOpen: null))) {
+      &:after {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  //selectable styles
+  &-selectableItem  {
+    display: flex;
+
+  }
+
+  &-selectableItemOptionHolder  {
+    padding: $basePadding/2 0.2rem $basePadding/2 $basePadding/2;
+    border: 0.1rem solid $pallet26;
+    border-width: 0.1rem 0 0.1rem 0.1rem;
+
+    &_disabled {
+      opacity: 0.5;
+    }
+  }
+
+  &-select {
+    @include themeCheckbox($checkboxSize, $checkboxSize*0.75, middle);
+
+    display: block;
+
+    color: inherit;
+    margin: 0;
+
+    &_disabled {
+      opacity: 0.5;
+    }
+  }
+
+  &-selectableItemHolder {
+    flex-grow: 1;
+  }
+}

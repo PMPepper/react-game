@@ -1,0 +1,9 @@
+.transitionHeightToContents {
+  height: 0;
+  overflow: hidden;
+  transition: height 0.3s linear;
+
+  >div {
+    overflow: hidden;
+  }
+}

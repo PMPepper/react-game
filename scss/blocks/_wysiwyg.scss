@@ -1,0 +1,57 @@
+@import '../mixins';
+@import '../theme';
+
+.wysiwyg {
+  h4 {
+    border-bottom: 0.1rem solid $pallet3;
+    margin-bottom: $basePadding* 0.5;
+    display: table;
+  }
+
+  p {
+    font-size: 1.3rem;
+    margin-bottom: $basePadding*0.5;
+  }
+
+  dl {
+    dt {
+      display: inline;
+      font-weight: bold;
+
+      &:after {
+        content: ': ';
+      }
+    }
+
+    dd {
+      display: inline;
+
+      &:after {
+        content:"\a";
+        white-space: pre;
+      }
+    }
+  }
+
+  ul {
+    @include wordBreak;
+    font-size: 1.3rem;
+
+    li {
+      position: relative;
+      line-height: 1.2;
+      padding: 0 0 $basePadding/4 1.2rem;
+
+      &:before {
+        content: '';
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0.3rem;
+        background: $pallet12;
+        width: 0.8rem;
+        height: 0.8rem;
+      }
+    }
+  }
+}

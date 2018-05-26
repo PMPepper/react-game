@@ -1,0 +1,147 @@
+@import '../theme';
+
+.dataTable {
+  $rowHeight: 4rem;
+
+  @include themeDataTable($rowHeight);
+
+  &-thead-tr-th{
+    &_select {
+      padding-left: 1.4rem;
+      text-align: left;
+    }
+
+    &_selectMerge {
+      border-left: 0;
+      padding-left: 0;
+    }
+
+    &_align_left {
+      text-align: left;
+    }
+
+    &_align_right {
+      text-align: right;
+    }
+
+    &_name_actions {
+      width: 3.4rem
+    }
+  }
+
+  &-tbody-tr-td {
+    position: relative;
+
+    &_select {
+      padding-right: 0;
+      padding-left: $basePadding - 0.1rem;
+      text-align: left;
+    }
+
+    &_selectMerge {
+      padding-left: 0;
+      border-left: 0;
+    }
+
+    &_align_left {
+      text-align: left;
+    }
+
+    &_align_right {
+      text-align: right;
+    }
+
+    &_wordBreak {
+      white-space: normal;
+      @include wordBreak;
+    }
+
+    &_maxWidth {
+      width: 100%;
+    }
+
+    &_dataFull {
+      padding: 0;
+    }
+
+    &_dataFormField {
+      padding: ($basePadding/8) ($basePadding/4);
+      min-width: 12rem;
+      width: 12rem;
+    }
+
+    &_name_actions {
+      width: 3.4rem
+    }
+  }
+
+  &-tbody-tr {
+    &_expand {
+      padding: 0;
+      line-height: 0;
+      font-size: 0;
+    }
+  }
+
+  &-selectAll {
+    @include themeCheckbox($checkboxSize, $checkboxSize*0.75, middle);
+
+    display: block;
+
+    color: inherit;
+  }
+
+  &-select {
+    @include themeCheckbox($checkboxSize, $checkboxSize*0.75, middle);
+
+    display: block;
+
+    color: inherit;
+
+    &_stacked {
+      margin-right: 0;
+      margin-left: 0.25em;
+    }
+  }
+
+  &-expand-toggle {
+    @include isOpenArrow($arrowSize: ($basePadding * (3/2)), $arrowSize2: 1.2rem, $loading: false, $right: 3.2rem);
+    @include themeTextInteraction($mouseColour: $pallet5);
+
+    border: 0;
+    width: 4rem;
+    height: 1.4rem;
+    background: transparent;
+    padding: 0;
+  }
+
+  &-slideReveal {
+    display: inline-block;
+    width: 100%;
+    font-size: 1rem;
+    line-height: 1.2;
+
+    &_stacked {
+      display: block;
+    }
+
+    &-holder {
+      background: $pallet0;
+    }
+
+    &-inner {
+      padding: ($basePadding/2) - 0.1rem;
+      border: $basePadding/2 solid $pallet25;
+
+      &_odd {
+        border-color: $pallet25;
+        border-top-width: 0;
+      }
+
+      &_stacked {
+        border: none;
+        border-top: 0.1rem solid $pallet24;
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+@import '../theme';
+@import '../mixins';
+
+.tooltipTrigger {
+  @include themeTextInteraction($mouseColour: $pallet5);
+
+  border: 0;
+  padding: 0;
+  background: transparent;
+
+  &-btnAccessible {
+    @include offscreen();
+  }
+}
