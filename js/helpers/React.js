@@ -62,7 +62,7 @@ function htmlDecode(input)
   return doc.documentElement.textContent;
 }
 
-export function mergeElementProps(props1, props2) {
+export function mergeElementProps(props1 = {}, props2 = {}) {
   const mergedProps = {...props1};
 
   for(let i = 0, keys = Object.keys(props2); i < keys.length; i++) {

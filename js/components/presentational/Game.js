@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 //Containers
 import Text from '../containers/Text';
 import SystemRenderer from '../containers/SystemRenderer';
-import PositionedContextMenu from '../containers/PositionedContextMenu';
+import ContextMenu from '../containers/ContextMenu';
 
 //Presentational
 let isFocussed = false;
@@ -30,7 +30,7 @@ export default function Game({systemBodies, factionSystemBodies, element, setEle
       onContextMenu={(e) => {e.preventDefault()}}
       onSystemBodiesClicked={setContextMenu}
     />
-    {contextMenu && <PositionedContextMenu
+    {contextMenu && <ContextMenu
       items={contextMenu.items}
       boundsX={0}
       boundsY={0}
@@ -40,7 +40,9 @@ export default function Game({systemBodies, factionSystemBodies, element, setEle
       positionY={contextMenu.y}
       positionWidth={0}
       positionHeight={0}
-      doRequestClose={() => (setContextMenu(null, null))}
+      doRequestClose={() => {
+        setContextMenu(null, null);
+      }}
     />}
   </div>
 }
