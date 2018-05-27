@@ -10,6 +10,9 @@ import CameraEasingComponent from '../highOrderComponents/CameraEasingComponent'
 //Presentational
 import SystemRenderer from '../presentational/SystemRenderer';
 
+//Helpers
+import {mergeElementProps} from '../../helpers/React';
+
 const CLICK_LIMIT = 2;
 const CLICK_LIMIT_2 = CLICK_LIMIT * CLICK_LIMIT;
 
@@ -30,14 +33,14 @@ export default compose(
           element
         };
       },
-      setMouseDownPos: () => (mouseDownX, mouseDownY) => ({mouseDownX, mouseDownY, isClickPrevented: false, isClickStarted: true}),
-      setMouseMovePos: ({mouseDownX, mouseDownY, isClickPrevented}) => (x, y) => {
+      setMouseDownPos: () => (e) => ({mouseDownX: e.clientX, mouseDownY: e.clientY, isClickPrevented: false, isClickStarted: true}),
+      setMouseMovePos: ({mouseDownX, mouseDownY, isClickPrevented}) => (e) => {
         if(isClickPrevented) {
           return;
         }
 
-        const dx = mouseDownX - x;
-        const dy = mouseDownY - y;
+        const dx = mouseDownX - e.clientX;
+        const dy = mouseDownY - e.clientY;
 
         if((dx * dx) + (dy * dy) > CLICK_LIMIT_2) {
           return {isClickPrevented: true};
@@ -49,6 +52,21 @@ export default compose(
         isClickPrevented: false,
         isClickStarted: false
       })
+    },
+    {
+      mapProps: ({setMouseDownPos, setMouseMovePos, clearMousePos, elementProps, ...props}) => {
+        return {
+          ...props,
+          elementProps: mergeElementProps(
+            elementProps,
+            {
+              onMouseDown: setMouseDownPos,
+              onMouseMove: setMouseMovePos,
+              onMouseUp: clearMousePos
+            }
+          )
+        };
+      }
     }
   ),
   CameraControlsComponent(),

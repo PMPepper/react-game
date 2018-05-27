@@ -12,7 +12,7 @@ export default function SystemRenderer({setElement, onSystemBodiesClicked, ...pr
   const {
     element, style, systemId, systemBodies, factionSystemBodies, zoom, x, y,
     width, height, cx, cy, bgImg, onMouseDown, onMouseUp, onMouseMove, onClick,
-    setMouseDownPos, setMouseMovePos, clearMousePos, isClickPrevented, isClickStarted,
+    setMouseMovePos, isClickPrevented, isClickStarted,
     mouseDownX, mouseDownY,
     elementProps
   } = props;
@@ -24,14 +24,8 @@ export default function SystemRenderer({setElement, onSystemBodiesClicked, ...pr
     height={height}
     style={style}
     ref={setElement}
-    onMouseDown={(e) => {
-      onMouseDown && onMouseDown(e);
-
-      setMouseDownPos(e.clientX, e.clientY);
-    }}
     onMouseUp={(e) => {
-      onMouseUp && onMouseUp(e);
-
+      //TODO move this into container?
       if(isClickStarted && !isClickPrevented) {
         onClick && onClick(e);
 
@@ -41,12 +35,7 @@ export default function SystemRenderer({setElement, onSystemBodiesClicked, ...pr
         }
       }
 
-      clearMousePos();
-    }}
-    onMouseMove={(e) => {
-      onMouseMove && onMouseMove(e);
-
-      setMouseMovePos(e.clientX, e.clientY);
+      elementProps.onMouseUp && elementProps.onMouseUp(e);
     }}
   ></canvas>
 }
