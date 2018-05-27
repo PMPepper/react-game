@@ -1,8 +1,16 @@
 @import '../theme';
 
+$cText: $cBodyCopy;
+$cBorder: $colour10;
+$cBG: $colour1;
+
+$cDarkText: $cText;
+$cDarkBorder: #a6a6a6;
+$cDarkBG: $colour7;
+
 .panel {
-  background: $pallet0;
-  border-bottom: 0.5rem solid $pallet4;
+  background: $cBG;
+  border: 0.2rem solid $cBorder;
   font-size: 2rem;
   display: flex;
   flex-flow: column;
@@ -17,11 +25,7 @@
   }
 
   &_theme_dark {
-    background: $pallet25;
-  }
-
-  &_theme_dashboard {
-    background: $pallet25;
+    background: $cDarkBG;
   }
 
   &_fullHeight {
@@ -30,32 +34,13 @@
 
   &-title {
     padding: $basePadding * 0.5;
-    border-bottom: 0.1rem solid $pallet25;
+    border-bottom: 0.1rem solid $cBorder;
     line-height: 1;
     font-size: 1.45rem;
     font-weight: bold;
 
     &_theme_dark {
-      font-weight: bold;
-      border-bottom-color: #a6a6a6;
-    }
-
-    &_theme_dashboard {
-      font-weight: bold;
-      border-bottom-color: $pallet26;
-      font-weight: normal;
-      font-size: 1.8rem;
-    }
-
-    &_theme_tabs {
-      border-left: 0.1rem solid $pallet24;
-      border-right: 0.1rem solid $pallet24;
-      border-top: 0.2rem solid $pallet4;
-      border-bottom: 0;
-      background: $pallet25;
-      padding: (($basePadding/2) + 0.3rem) $basePadding (($basePadding/2) - 0.3rem);
-      font-size: 1.65rem;
-      font-weight: normal;
+      border-bottom-color: $cDarkBorder;
     }
   }
 
@@ -75,13 +60,6 @@
       display: flex;
       flex-flow: column;
       justify-content: flex-end;
-    }
-
-    &_theme_tabs {
-      border-left: 0.1rem solid $pallet24;
-      border-right: 0.1rem solid $pallet24;
-      box-shadow: inset 0 0 0 0.8rem $pallet25;
-      padding: $basePadding;
     }
   }
 }

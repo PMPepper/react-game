@@ -4,11 +4,13 @@
 
 $cText: $cBodyCopy;
 $cBorder: $cBodyCopy;
+$cBG: $colour1;
+$cSelectedBG: $colour6;
 
 .menu {
   &-list {
     width: 24rem;
-    background: $pallet0;
+    background: $cBG;
     border: 1px solid $cBorder;
     border-bottom-width: 0.1rem;
     color: $cText;
@@ -37,7 +39,7 @@ $cBorder: $cBodyCopy;
     outline: none;
 
     &_isSelectedItem {
-      background: $pallet22;
+      background: $cSelectedBG;
     }
 
     &_disabled {

@@ -20,7 +20,7 @@ export default function SystemRenderer({onSystemBodiesClicked, ...props}) {
   return <canvas
     {...elementProps}
     onClick={null}//prevent 'real' click handler
-    className={mergeClassName('systemRenderer', elementProps.className)}//TODO merge in element props?
+    className={mergeClassName('systemRenderer', elementProps.className)}
     width={width}
     height={height}
     onMouseUp={(e) => {

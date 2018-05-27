@@ -6,9 +6,10 @@ import PropTypes from 'prop-types';
 import Text from '../containers/Text';
 import SystemRenderer from '../containers/SystemRenderer';
 import ContextMenu from '../containers/ContextMenu';
+import Panel from '../containers/Panel';
 
 //Presentational
-let isFocussed = false;
+
 
 export default function Game({systemBodies, factionSystemBodies, element, setElement, contextMenu, setContextMenu}) {
   const width = element ? element.clientWidth :  500;
@@ -46,5 +47,10 @@ export default function Game({systemBodies, factionSystemBodies, element, setEle
         setContextMenu(null, null);
       }}
     />}
+    {/*<div style={{position: 'fixed', left: '20px', top: '20px'}}>
+      <Panel title={'Hello world'}>
+        This is a panel
+      </Panel>
+    </div>*/}
   </div>
 }

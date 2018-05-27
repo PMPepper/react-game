@@ -71,6 +71,11 @@ export function mergeElementProps(props1 = {}, props2 = {}) {
 
     if(key === 'className') {
       mergedProps.className = mergeClassName(mergedProps.className, value);
+    } else if(key === 'style') {
+      mergedProps.style = {
+        ...mergedProps.style,
+        ...props2.style
+      };
     } else {
       if(mergedProps.hasOwnProperty(key) && ((mergedProps[key] instanceof Function) && (value instanceof Function))) {
         mergedProps[key] = combineFunctions(mergedProps[key], value);

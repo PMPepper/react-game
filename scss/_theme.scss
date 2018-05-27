@@ -2,7 +2,23 @@
 $stickyNav: true;
 
 //colours/styles
+$colour0: #000;
+$colour1: #FFF;
+$colour2: #333;
+$colour3: #666;
+$colour4: #999;
+$colour5: #CCC;
+$colour6: #DDD;
+$colour7: #EEE;
 
+$colour10: #556699;
+$colour11: #113355;//pallet4
+$colour12: #112233;//pallet6
+
+$colour20: #0088FF;//pallet29
+
+//Legacy pallet colours
+/*
 $pallet0: #FFF;
 $pallet1: #838682;
 $pallet2: #a8aba8;
@@ -26,10 +42,9 @@ $pallet19: #1c3443;
 $pallet20: #61717c;
 $pallet21: #14242f;
 
-$pallet22: #E0E0E0;//mouse focus/hover colour
+
 
 $pallet24: #b7b7b7;
-$pallet25: #ebebeb;
 $pallet26: #D9D9D9;
 
 $pallet27: #27AE60;
@@ -37,57 +52,28 @@ $pallet28: #FF7F00;
 $pallet29: #007FFF;
 
 $pallet30: #F3F3F3;
+*/
 
-$cKeyboardFocus: $pallet13;//keyboard focus colour
 
 //page
-
-$cPageBg: $pallet22;
-$cMainBg: $pallet0;
+$cPageBg: $colour6;
+$cMainBg: $colour1;
 
 $pageBg: $cPageBg;
 $mainBg: $cMainBg;
 
-$appMargin: 0;
-
-//header
-$cHeaderBg: $pallet4;
-$headerBg: $cHeaderBg;
-$headerHeight: 4.6rem;
-
-
-//navigation
-$cNavBg: $pallet12;
-$navBg: $cNavBg;
-$navWidth: 6.5rem;
-
-
-$cLogoBg: $pallet6;
-
-
-$cBCenterNavBg: #4D4D4D;
-$cBCenterLogoBg: #333;
-$cBCenterHeaderBg: #4D4D4D;
-
-$bCenterNavBg: $cBCenterNavBg;
-$bCenterHeaderBg: $cBCenterHeaderBg;
 
 //fonts/text
-$fontFamily: galano_grotesque, Helvetica, Arial, "Sans-serif";
+$fontFamily: Helvetica, Arial, "Sans-serif";
 $bodyCopySize: 1.4rem;
 $bodyCopyLineHeight: 1.2;
-$cBodyCopy: #333;
+$cBodyCopy: $colour2;
 
-//text colour
-$cText: $pallet4;
-$cMinorText: $pallet3;
-$cHeaderText: $pallet0;
-$cNavText: $pallet0;
-$cUserText: $pallet0;
 
-$cError: #d04148;
-$cSuccess: $pallet27;
-$cWarning: $pallet28;
+$cError: #dd5050;
+$cSuccess: #229944;
+$cWarning: #EE7711;
+$cKeyboardFocus: #FF00FF;//keyboard focus colour
 
 
 //Sizes
@@ -96,283 +82,8 @@ $checkboxSize: 1.8rem;
 
 
 //Theme mixins
-@mixin isOpenArrow($arrowSize: 0.7rem, $arrowSize2: $arrowSize, $color: currentColor, $right:1.5rem, $loading: false) {
-  position: relative;
-  cursor: pointer;
 
-  &:after {
-    @include triangle(bottom, $color, $arrowSize, $arrowSize2);
-
-    position: absolute;
-    right: $right - ($arrowSize);
-    top: 50%;
-    margin-top: 0;// - $arrowSize2 * 0.5;
-
-    transform: translate(0,-50%);
-    transform-origin: center;
-    transition: transform 0.15s ease-out;
-  }
-
-  @include modifyBEMSelector((modifiers: (isOpen: null))) {
-
-    @if($loading != false) {
-      cursor: progress;
-
-      &:before {
-        opacity: 1;
-      }
-    }
-
-    &:after {
-      transform: translate(0,-50%) rotate(180deg);
-    }
-
-    &:hover:after {
-      transform: translate(0,-50%) rotate(180deg);
-    }
-  }
-
-  @if($loading != false) {
-    &_isOpen#{&}_loaded {
-      cursor: pointer;
-
-      &:before {
-        opacity: 0;
-      }
-    }
-  }
-}
-
-$animations:();
-
-@mixin loadingIndeterminateBlock($color: $pallet0, $opacity: 0.2, $size: 10rem, $time: 1s) {
-  //gradient over top simulates opacity of the gif (gif's can't have an alpha channel
-  //background-image: linear-gradient(to bottom, rgba($bgColor,0.8) 0%,rgba($bgColor,0.6) 50%,rgba($bgColor,0.8) 100%), url('../images/loading-indeterminate.gif');
-
-  //Create the animation if it doesn't already exist
-  $animationName: moveBackgroundPositionRightAnimationDistance#{$size};
-
-  @if(index($animations, $animationName) == null) {
-    $animations: append($animations, $animationName);
-
-    @keyframes #{$animationName} {
-        0%{background-position: 0 50%}
-        100%{background-position: $size 50%}
-    }
-  }
-
-
-  background-image: repeating-linear-gradient(135deg,
-    rgba($color, 0) 0%, rgba($color, 0) 25%,
-    rgba($color, $opacity) 25%, rgba($color, $opacity) 50%,
-    rgba($color, 0) 50%, rgba($color, 0) 75%,
-    rgba($color, $opacity) 75%, rgba($color, $opacity) 100%
-  );
-
-  background-size: $size $size;
-  animation: $time infinite linear normal $animationName;
-}
-
-@mixin themeCTA($size: normal, $noInteraction: false) {
-  @if($size == normal) {
-    display: block;
-    background: $pallet6;
-    width: 100%;
-    border: 0;
-    padding: $basePadding/2;
-    text-align: left;
-    color: $pallet0;
-    font-size: 1.3rem;
-    position: relative;
-    text-decoration: none;
-
-    &:after {
-      @include triangle(right, currentColor, $basePadding/2, $basePadding/2);
-      position: absolute;
-      right: $basePadding;
-      top: 50%;
-      margin-top: -$basePadding/4;
-    }
-  }
-
-  @if($size == large) {
-    display: block;
-    background: $pallet6;
-    width: 100%;
-    border: 0;
-    padding: $basePadding;
-    text-align: left;
-    color: $pallet0;
-    font-size: 2rem;
-    position: relative;
-    text-decoration: none;
-
-    &:after {
-      @include triangle(right, currentColor, $basePadding, $basePadding);
-      position: absolute;
-      right: $basePadding;
-      top: 50%;
-      margin-top: -$basePadding/2;
-    }
-  }
-
-  @if($noInteraction == false) {
-    @include themeBlockInteraction($mouseColour: $pallet5);
-  }
-}
-
-@mixin themeWrappingCTA() {
-  text-decoration: none;
-}
-
-@mixin themeWrappedCTA($size: normal) {
-  @include themeCTA($size, true);
-
-  $keyboardBG: $cKeyboardFocus;
-  $keyboardCol: $pallet0;
-
-  a:hover & {
-    background-color: $pallet5;
-    outline: none;
-  }
-
-  .focus_keyboard a:focus & {
-    background: $keyboardBG;
-    color: $keyboardCol;
-    outline: none;
-  }
-}
-
-@mixin themeHR() {
-  border: 0;
-  border-bottom: 0.1px solid $pallet24;
-  padding: 0;
-  margin: $basePadding 0;
-}
-
-@mixin themeDL($term: 'key', $definition: 'value', $termWidth: 10rem) {
-  font-size: 1.3rem;
-  display: flex;
-  flex-flow: row wrap;
-  overflow: hidden;
-  border: 0.1rem solid $pallet26;
-  align-items: stretch;
-  text-align: left;
-
-  @include modifyBEMSelector((element: '&-#{$term}')) {
-    @include wordBreak;
-    background: $pallet25;
-    padding: $basePadding/4;
-
-    @if(strip-unit($termWidth) < 0) {
-      flex-basis: calc(100% - #{- $termWidth});
-    } @else {
-      flex-basis: $termWidth;
-    }
-
-    &:nth-of-type(2n) {
-      background: $pallet0;
-    }
-  }
-
-  @include modifyBEMSelector((element: '&-#{$definition}')) {
-    @include wordBreak;
-    background: $pallet25;
-    padding: $basePadding/4;
-    font-weight: bold;
-
-    @if(strip-unit($termWidth) < 0) {
-      flex-basis: - $termWidth;
-    } @else {
-      flex-basis: calc(100% - #{$termWidth});
-    }
-
-    &:nth-of-type(2n) {
-      background: $pallet0;
-    }
-  }
-}
-
-@mixin themeUL ($item: 'item', $type: standard) {
-  @include wordBreak;
-
-  @if($type == standard) {
-    margin-top: -0.1rem;
-  } @else if($type == simple OR $type == basic) {
-    font-size: 1.3rem;
-  }
-
-  @include modifyBEMSelector((element: '&-#{$item}')) {
-    @if($type == standard) {
-      margin-top: 0.1rem;
-      background: $pallet25;
-      padding: $basePadding/2;
-      border-left: 0.5rem solid $pallet4;
-    } @else if($type == simple) {
-      padding: $basePadding/2 $basePadding/2 $basePadding/2 2.7rem;
-      background: $pallet25;
-      position: relative;
-      line-height: 1.2;
-
-      &:before {
-        content: '';
-        display: block;
-        position: absolute;
-        left: 1.2rem;
-        top: 1.2rem;
-        background: $pallet12;
-        width: 0.8rem;
-        height: 0.8rem;
-      }
-
-      &:nth-child(even) {
-        background: $pallet0;
-      }
-    } @else if($type == basic) {
-      position: relative;
-      line-height: 1.2;
-      padding: 0 0 $basePadding/4 1.2rem;
-
-      &:before {
-        content: '';
-        display: block;
-        position: absolute;
-        left: 0;
-        top: 0.3rem;
-        background: $pallet12;
-        width: 0.8rem;
-        height: 0.8rem;
-      }
-    }
-  }
-}
-
-@mixin themeOL($item: 'item', $size: $basePadding*2) {
-  margin-top: -0.1rem;
-
-  counter-reset: ol;
-
-  @include modifyBEMSelector((element: '&-#{$item}')) {
-    margin-top: 0.1rem;
-    background: $pallet25;
-    padding: $basePadding/2;
-    border-left: $size solid $pallet4;
-
-    &:before {
-      counter-increment: ol;
-      content: counter(ol);
-      color: $pallet0;
-      display: inline-block;
-      margin-left: -($size+($basePadding/2));
-      margin-right: ($basePadding/2);
-      width: $size;
-      text-align: center;
-    }
-
-  }
-}
-
-@mixin themeBlockInteraction($mouseFocus: false, $mouseColour: $pallet30, $keyboardBG: $cKeyboardFocus, $keyboardCol: $pallet0) {
+@mixin themeBlockInteraction($mouseFocus: false, $mouseColour: $colour7, $keyboardBG: $cKeyboardFocus, $keyboardCol: $colour1) {
   @if($mouseFocus != false) {
     .focus_mouse &:focus {
       background-color: $mouseColour;
@@ -392,7 +103,7 @@ $animations:();
   }
 }
 
-@mixin themeTextInteraction($mouseFocus: false, $mouseColour: $pallet22, $keyboardCol: $cKeyboardFocus) {
+@mixin themeTextInteraction($mouseFocus: false, $mouseColour: $colour6, $keyboardCol: $cKeyboardFocus) {
   @if($mouseFocus != false) {
     .focus_mouse &:focus {
       color: $mouseColour;
@@ -411,67 +122,12 @@ $animations:();
   }
 }
 
-//form styles
-@mixin themeCheckbox($size: $checkboxSize, $lineHeight: 1.4rem, $verticalAlign:inherit, $color: inherit) {
-  @include themeCheckboxBase($size, $lineHeight, $verticalAlign, $color);
-
-  @include modifyBEMSelector((element: '&-label')) {
-    @include themeCheckboxLabel($size, $lineHeight, $verticalAlign, $color);
-  }
-}
-
-@mixin themeCheckboxBase($size: $checkboxSize, $lineHeight: 1.4rem, $verticalAlign:inherit, $color: inherit) {
-  vertical-align: $verticalAlign;
-  line-height:  $lineHeight;
-  margin: 0 0.5rem 0 0;
-  color: $color;
-  font-size: $checkboxSize;
-}
-
-@mixin themeCheckboxLabel($size: $checkboxSize, $lineHeight: 1.4rem, $verticalAlign:inherit, $color: inherit) {
-  line-height: inherit;
-  position: relative;
-  z-index: 2;
-  width: 1.15em;
-  display: inline-block;
-  text-align: left;
-  cursor: pointer;
-
-  &:hover {
-    color: $pallet5;
-  }
-
-  .focus_keyboard input:focus + & {
-    color: $cKeyboardFocus;
-  }
-
-  .fa {
-    line-height: inherit;
-  }
-
-  @include modifyBEMSelector((element: '&-icon-indeterminate')) {
-    font-size: 0.60em;
-    position: absolute;
-    left: 0.22em;
-    top: 0;
-  }
-}
-
-@mixin themeDropdown($color: $pallet4, $bgColor: $pallet0, $mouseColour: $pallet30, $keyboardBG: $cKeyboardFocus, $keyboardCol: $pallet0) {
-  border: none;
-  background: $bgColor;
-  text-align: left;
-  vertical-align: middle;
-  color: $color;
-  font-size: 2rem;
-  cursor: pointer;
-
-  @include themeBlockInteraction($mouseFocus: true, $mouseColour: $mouseColour, $keyboardBG: $keyboardBG, $keyboardCol: $keyboardCol);
-
-  &[disabled],
-  &[readonly] {
-    color: rgba($color, 0.7);
-  }
+//Component themes
+@mixin themeHR() {
+  border: 0;
+  border-bottom: 0.1px solid $colour5;
+  padding: 0;
+  margin: $basePadding 0;
 }
 
 @mixin themeBtn($size: normal, $light: false) {
@@ -482,38 +138,38 @@ $animations:();
   @if($light == false) {
     //dark
     border: 0;
-    border-left: $leftBorderWidth solid $pallet6;
-    color: $pallet0;
-    background: $pallet4;
+    border-left: $leftBorderWidth solid $colour12;
+    color: $colour1;
+    background: $colour11;
 
     &[disabled] {
-      background: $pallet3;
-      border-color: $pallet8;
+      background: $colour2;
+      border-color: $colour3;
       pointer-events: none;
     }
 
-    @include themeBlockInteraction($mouseColour: $pallet5);
+    @include themeBlockInteraction($mouseColour: $colour10);
   } @else {
     //light
-    border: 0.1rem solid $pallet3;
+    border: 0.1rem solid $colour2;
     $verticalPaddingAdjust: -0.1;
     border-left: 0;
-    color: $pallet4;
-    background: $pallet0;
-    box-shadow: -$leftBorderWidth 0 0 0 $pallet4;
+    color: $colour11;
+    background: $colour1;
+    box-shadow: -$leftBorderWidth 0 0 0 $colour11;
     margin-left: $leftBorderWidth;
 
     &[disabled] {
-      border-color: $pallet2;
+      border-color: $colour4;
       pointer-events: none;
-      color: $pallet2;
+      color: $colour4;
     }
 
-    @include themeTextInteraction($mouseColour: $pallet5);
+    @include themeTextInteraction($mouseColour: $colour10);
 
     &:hover,
     .focus_keyboard &:focus {
-      background: $pallet0;
+      background: $colour1;
     }
   }
 
@@ -558,495 +214,125 @@ $animations:();
   }
 }
 
-@mixin themeCloseBtn() {
-  position: absolute;
-  z-index: 1;
-  display: block;
-  top: 0.6rem;
-  right: 0.7rem;
-  vertical-align: top;
-  line-height: 0.9;
-  padding: 0;
-  border: none;
-  margin: 0;
-  background: transparent;
-  font-size: 2.5rem;
-  color: $pallet4;
-
-  @include themeTextInteraction($mouseColour: $pallet5);
-
-  > * {
-    pointer-events: none;
-  }
-}
-
-//data table styles
-
-@mixin themeDataTable ($rowHeight: null) {
-  @include themeDataTableTable();
-
-  //#{modifyBEMSelector((element: '&-thead-tr-th'))} {
-  @include modifyBEMSelector((element: '&-thead-tr-th')) {
-    @include themeDataTableTH($rowHeight);
-  }
-
-  //#{modifyBEMSelector((element: '&-tbody-tr'))} {
-  @include modifyBEMSelector((element: '&-tbody-tr')) {
-    @include themeDataTableBodyTR($rowHeight);
-  }
-
-  @include modifyBEMSelector((element: '&-tfoot-tr-td')) {
-    //padding: $basePadding;
-    background: $pallet24;
-    //border-bottom: 0.2rem solid $pallet6;
-  }
-
-
-}
-
-@mixin themeDataTableTable () {
-  width: 100%;
-  border: 0.1rem solid $pallet24;
-  border-top: none;
-  margin-top: ($basePadding * 0.5);
-  border-spacing: 0;
-  border-collapse: separate;
-
-  @include modifyBEMSelector((modifiers: (noTopMargin: null))) {
-    margin-top: 0;
-  }
-
-  //TODO this should be separated from dataTables theme
-  @include themeLegacyStackTable;
-}
-
-@mixin themeDataTableTH ($rowHeight: null) {
-  font-size: 1.65rem;
-  vertical-align: middle;
-  height: $rowHeight;
-  padding: $basePadding*0.5;
-  text-rendering: geometricPrecision;
-  text-decoration: none;
-  outline: none;
-  border-left: 0.1rem solid $pallet24;
-  border-top: 0.1rem solid $pallet24;
-  text-align: center;
-  white-space: nowrap;
-  position: relative;
-
-  &:first-child {
-    border-left: none;
-  }
-
-  @include modifyBEMSelector((element: '&-btn')) {
-    @include themeDataTableHeaderBtn();
-  }
-
-  @include modifyBEMSelector((element: '&-abbr')) {
-    &[title] {
-      border: 0;
-      text-decoration: none;
-    }
-  }
-}
-
-@mixin themeDataTableHeaderBtn($stacked: false) {
-  @include themeTextInteraction($mouseColour: $pallet5);
-
-  $arrowWidth: 2rem;
-  $arrowHeight: 1rem;
-
-  $stackedArrowWidth: 1rem;
-  $stackedArrowHeight: 0.5rem;
-
-  border: 0;
-  background: transparent;
-  padding: 0;
-  white-space: inherit;
-  display: block;
-  width: 100%;
-  text-align: inherit;
-
-  @if($stacked == false) {
-    padding-right: $arrowWidth + 0.5rem;
-    padding-left: $arrowWidth + 0.5rem;
-
-    @include modifyBEMSelector((modifiers: (align: left))) {
-      padding-left: 0;
-    }
-
-    @include modifyBEMSelector((modifiers: (align: right))) {
-      padding-left: 0;
-    }
-  } @else {
-    padding-right: $stackedArrowWidth + $basePadding/4;
-  }
-
-  @include modifyBEMSelector((modifiers: (sort: asc))) {
-    &:after {
-      @if($stacked == false) {
-        @include triangle(bottom, currentColor, $arrowWidth, $arrowHeight);
-        right: $basePadding/2;
-      } @else {
-        @include triangle(bottom, currentColor, $stackedArrowWidth, $stackedArrowHeight);
-        left: 10rem - $stackedArrowWidth - $basePadding/4;
-      }
-
-      position: absolute;
-      top: 50%;
-      margin-top: 0;
-
-      transform: translate(0,-50%);
-      transform-origin: center;
-      transition: transform 0.15s ease-out;
-    }
-  }
-
-  @include modifyBEMSelector((modifiers: (sort: desc))) {
-    &:after {
-      @if($stacked == false) {
-        @include triangle(bottom, currentColor, $arrowWidth, $arrowHeight);
-        right: $basePadding/2;
-      } @else {
-        @include triangle(bottom, currentColor, $stackedArrowWidth, $stackedArrowHeight);
-        left: 10rem - $stackedArrowWidth - $basePadding/4;
-      }
-
-      position: absolute;
-      top: 50%;
-      margin-top: 0;
-
-      transform: translate(0,-50%) rotate(180deg);
-      transform-origin: center;
-      transition: transform 0.15s ease-out;
-    }
-  }
-}
-
-@mixin themeDataTableBodyTR ($rowHeight: null, $align: top) {
-  background: $pallet0;
-
-  @include modifyBEMSelector((modifiers: (odd: null))) {
-    background: $pallet25;
-  }
-
-  @include modifyBEMSelector((element: '&-td')) {
-    color: $cText;
-    font-size: 1.65rem;
-    line-height: 1.0;
-    border-left: 0.1rem solid $pallet24;
-    border-top: 0.1rem solid $pallet24;
-    vertical-align: $align;
-    padding: $basePadding*0.5;
-    text-align: center;
-
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 35rem;
-
-
-      &:first-child {
-        border-left: none;
-      }
-
-    @include modifyBEMSelector((modifiers: (isOpen: null))) {
-      font-weight: bold;
-    }
-
-    @include modifyBEMSelector((modifiers: (disabled: null))) {
-      color: rgba($cText, 0.7);
-    }
-  }
-}
-
-@mixin themeLegacyStackTable() {
-  @include modifyBEMSelector((modifiers: (stacked: null))) {
-    border: 0;
-    overflow: hidden;
-    display: flex;
-    flex-flow: row wrap;
-  }
-
-  @include modifyBEMSelector((element: '&-selectHolder')) {
-    flex-basis: 0;
-    flex-grow: 0;
-    margin-bottom: $basePadding/2;
-    //position: relative;
-
-    border: 0.1rem solid $pallet24;
-    border-right: 0;
-    border-left: 0;
-
-    @include modifyBEMSelector((modifiers: (hasExpand: null))) {
-      border-bottom: 0;
-    }
-
-    padding: $basePadding/4;
-
-    display: flex;
-    flex-flow: center;
-    align-items: center;
-  }
-
-  @include modifyBEMSelector((element: '&-item')) {
-    //border: 0.1rem solid $pallet24;
-    margin-bottom: $basePadding/2;
-
-    @include themeDL();
-
-    flex-grow: 1;
-    flex-basis: calc(100% - 4rem);
-
-    @include modifyBEMSelector((modifiers: (hasExpand: null))) {
-      border-bottom-width: 0;
-    }
-
-    @include modifyBEMSelector((element: '&-key')) {
-      position: relative;
-    }
-
-    @include modifyBEMSelector((element: '&-value')) {
-      position: relative;
-    }
-
-    @include modifyBEMSelector((element: '&-key-btn')) {
-      @include themeDataTableHeaderBtn($stacked: true);
-    }
-  }
-
-  @include modifyBEMSelector((element: '&-stacked-expand')) {
-    border: 0.1rem solid $pallet24;
-    border-top: 0;
-    margin: -$basePadding/2 0 $basePadding/2;
-    flex-basis: 100%;
-    max-width: 100%;//needed to make chrome keep shrinking this content
-
-    &:last-of-type {
-      margin-bottom: 0;
-    }
-  }
-
-  @include modifyBEMSelector((element: '&-stacked-expand-btn')) {
-    border: none;
-    border-top: 0.1rem solid $pallet24;
-    background: none;
-    display: block;
-    width: 100%;
-    height: $basePadding;
-    background: $pallet25;
-    position: relative;
-
-    @include themeTextInteraction($mouseColour: $pallet5);
-
-    &:after {
-      @include triangle(bottom, currentColor, $basePadding, $basePadding/2);
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      margin: (-$basePadding/4) (-$basePadding/2);
-      transform: rotate(0deg);
-    }
-
-    @include modifyBEMSelector((modifiers: (isOpen: null))) {
-      &:after {
-        transform: rotate(180deg);
-      }
-    }
-  }
-}
-
-@mixin themeToolbar() {
-  $color: $pallet11;
-
-  border-bottom: 0.2rem solid $color;
-  //($basePadding + 0.1rem - ($checkboxSize/2)) $basePadding*0.5;
-  margin-bottom: $basePadding*0.5;
-  display: flex;
-  justify-content: space-between;
-  align-items: stretch;
-  background: rgba($color, 0.2);
-
-  @include modifyBEMSelector((element: '&-items')) {
-    padding: 0 ($basePadding/2);
-
-    @include modifyBEMSelector((element: '&-set')) {
-      display: inline-block;
-
-      padding: 0 ($basePadding/2);
-      //margin: 0 (-$basePadding/2);
-      border-right: 0.2rem solid $pallet0;
-
-      &:first-child {
-        margin-left: -$basePadding/2;
-      }
-    }
-  }
-
-  @include modifyBEMSelector((element: '&-search')) {
-    vertical-align: middle;
-  }
-
-  @include modifyBEMSelector((element: '&-btn')) {
-    @include themeToolbarBtn();
-    width: 5rem;
-    height: 4rem;
-    border-width: 0.1rem;
-    font-size: 2.5rem;
-    margin: ($basePadding/4) ($basePadding/2);
-    vertical-align: inherit;
-
-    &:first-child {
-      margin: ($basePadding/4) ($basePadding/2);
-    }
-
-    border-color: currentColor;
-
-    @include modifyBEMSelector((modifiers: (colour: 'blue'))) {
-      color: $pallet29;
-    }
-
-    @include modifyBEMSelector((modifiers: (colour: 'green'))) {
-      color: $pallet27;
-    }
-
-    @include modifyBEMSelector((modifiers: (colour: 'orange'))) {
-      color: $pallet28;
-    }
-
-    @include modifyBEMSelector((modifiers: (colour: 'red'))) {
-      color: $cError;
-    }
-  }
-}
-
-@mixin themeToolbarBtn() {
-  background: $pallet0;
-  border: 0.2rem solid $pallet4;
-  text-align: center;
-  padding: $basePadding*0.25 $basePadding*0.5;
-  font-size: 1.4rem;
-  margin: 0 0 0 $basePadding*0.5;
-  min-width: 3.4rem;
-
-  text-shadow: 0 0 1px #FFF, 0 0 1px #FFF, 0 0 1px #FFF;
-
-  &:first-child {
-    margin-left: 0;
-  }
-
-  &[disabled] {
-    opacity: 0.5;
-    pointer-events: none;
-  }
-
-  > *{
-    pointer-events: none;
-  }
-
-  @include themeBlockInteraction();
-
-  .focus_keyboard &:focus {
-    text-shadow: 0 0 1px $pallet13, 0 0 1px $pallet13, 0 0 1px $pallet13;
-  }
-}
-
-@mixin themeAddComponent() {
-  position: relative;
-
-  &-loadingHolder {
-    position: absolute;
-    z-index: 2;
-    top: 50%;
-    left: 50%;
-    width: 20rem;
-    height: 20rem;
-    transform: translate(-50%, -50%);
-  }
-
-  &-added {
-    display: block;
-    margin-bottom: $basePadding;
-  }
-
-  &-error {
-    display: block;
-    margin-bottom: $basePadding;
-  }
-}
-
-@mixin themeContainerPage() {
-  min-height: calc(100vh - #{$headerHeight + ($appMargin*2)});
-  overflow: hidden;
-  display: flex;
-
-  &-subnavHolder {
-    flex-grow: 0;
-  }
-
-  &-content {
-    flex-grow: 1;
-    padding: $basePadding;
-    margin-bottom: 6rem;
-
-    //this is needed to make Chrome render properly - without it this div stops shrinking with screen size
-    flex-basis: 1rem;
-    width: 1rem;
-
-    @include upToBreakpoint('mobile') {
-      padding: $basePadding*0.5;
-    }
-  }
-}
-
-@mixin themeComponentPage () {
-  &-tableHolder {
-    margin-bottom: $basePadding/2;
-  }
-}
-
-@mixin reportPage() {
-  &-chartSpacer {
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-    max-height: 50vh;
-    min-height: 20rem;
+@mixin themeOL($item: 'item', $size: $basePadding*2) {
+  margin-top: -0.1rem;
+
+  counter-reset: ol;
+
+  @include modifyBEMSelector((element: '&-#{$item}')) {
+    margin-top: 0.1rem;
+    background: $colour7;
+    padding: $basePadding/2;
+    border-left: $size solid $colour11;
 
     &:before {
-      display: block;
-      content: '';
-      width: 0;
-      overflow: hidden;
-      margin-top: percentage(1/3);
+      counter-increment: ol;
+      content: counter(ol);
+      color: $colour1;
+      display: inline-block;
+      margin-left: -($size+($basePadding/2));
+      margin-right: ($basePadding/2);
+      width: $size;
+      text-align: center;
+    }
+
+  }
+}
+
+@mixin themeUL ($item: 'item', $type: standard) {
+  @include wordBreak;
+
+  @if($type == standard) {
+    margin-top: -0.1rem;
+  } @else if($type == simple OR $type == basic) {
+    font-size: 1.3rem;
+  }
+
+  @include modifyBEMSelector((element: '&-#{$item}')) {
+    @if($type == standard) {
+      margin-top: 0.1rem;
+      background: $colour7;
+      padding: $basePadding/2;
+      border-left: 0.5rem solid $colour11;
+    } @else if($type == simple) {
+      padding: $basePadding/2 $basePadding/2 $basePadding/2 2.7rem;
+      background: $colour7;
+      position: relative;
+      line-height: 1.2;
+
+      &:before {
+        content: '';
+        display: block;
+        position: absolute;
+        left: 1.2rem;
+        top: 1.2rem;
+        background: $colour12;
+        width: 0.8rem;
+        height: 0.8rem;
+      }
+
+      &:nth-child(even) {
+        background: $colour12;
+      }
+    } @else if($type == basic) {
+      position: relative;
+      line-height: 1.2;
+      padding: 0 0 $basePadding/4 1.2rem;
+
+      &:before {
+        content: '';
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0.3rem;
+        background: $colour12;
+        width: 0.8rem;
+        height: 0.8rem;
+      }
+    }
+  }
+}
+
+
+@mixin themeDL($term: 'key', $definition: 'value', $termWidth: 10rem) {
+  font-size: 1.3rem;
+  display: flex;
+  flex-flow: row wrap;
+  overflow: hidden;
+  border: 0.1rem solid $colour6;
+  align-items: stretch;
+  text-align: left;
+
+  @include modifyBEMSelector((element: '&-#{$term}')) {
+    @include wordBreak;
+    background: $colour7;
+    padding: $basePadding/4;
+
+    @if(strip-unit($termWidth) < 0) {
+      flex-basis: calc(100% - #{- $termWidth});
+    } @else {
+      flex-basis: $termWidth;
+    }
+
+    &:nth-of-type(2n) {
+      background: $colour1;
     }
   }
 
-  &-loadHolder {
-    position: relative;
-    width: 15rem;
-    height: 15rem;
-    margin: $basePadding auto;
+  @include modifyBEMSelector((element: '&-#{$definition}')) {
+    @include wordBreak;
+    background: $colour7;
+    padding: $basePadding/4;
+    font-weight: bold;
 
-    //{Math.max(200, Math.min(Math.round(window.outerHeight * 0.5), Math.floor(outerWidth / aspectRatio)))
-  }
+    @if(strip-unit($termWidth) < 0) {
+      flex-basis: - $termWidth;
+    } @else {
+      flex-basis: calc(100% - #{$termWidth});
+    }
 
-}
-
-@mixin themeSettingsPage () {
-  margin: 0 (-$basePadding/2) $basePadding;
-
-  //make boxes match heights
-  display: flex;
-  flex-wrap: wrap;
-
-  @include upToBreakpoint('mobile') {
-    padding: $basePadding*0.5 0 0;
-  }
-
-  $phabletFontSize: 1.5rem;
-
-  &-content {
-    @extend .g-panelContent;
+    &:nth-of-type(2n) {
+      background: $colour1;
+    }
   }
 }

@@ -34,12 +34,12 @@
   }
 
   &-link {
-    color: $pallet4;
+    color: $colour11;
   }
 
   &-linkAction {
     display: inline;
-    color: $pallet29;
+    color: $colour20;
     border: 0;
     background: transparent;
     padding: 0;
@@ -68,7 +68,7 @@
   }
 
   &-phone {
-    color: $pallet4;
+    color: $colour11;
   }
 
   &-space {
@@ -81,7 +81,7 @@
 
   &-simpleBox {
     padding: $basePadding/2;
-    background: $pallet0;
+    background: $colour1;
   }
 
   &-hr {
@@ -112,7 +112,7 @@
     }
 
     &_white {
-      background: $pallet0;
+      background: $colour1;
       padding: $basePadding/2 $basePadding/2 0;
       margin: 0;
     }
@@ -217,7 +217,7 @@
   }
 
   &-panelContent {
-    background: $pallet0;
+    background: $colour1;
     padding: $basePadding/2;
     flex-grow: 1;
   }
