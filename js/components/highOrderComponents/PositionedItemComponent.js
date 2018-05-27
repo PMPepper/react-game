@@ -86,7 +86,7 @@ export default function PositionedItemComponent({
 
               return havePropsChanged;
             },
-            ({positionedItemContentWidth, positionedItemContentHeight, boundsX, boundsY, boundsWidth, boundsHeight, positionX, positionY, positionWidth, positionHeight}) => {
+            ({positionedItemContentWidth, positionedItemContentHeight, boundsX, boundsY, boundsWidth, boundsHeight, positionX, positionY, positionWidth = 0, positionHeight = 0}) => {
               return {
                 positionedItemX: xPosRule(positionedItemContentWidth, boundsX, boundsWidth, positionX, positionWidth),
                 positionedItemY: yPosRule(positionedItemContentHeight, boundsY, boundsHeight, positionY, positionHeight),
@@ -124,7 +124,7 @@ export function alignStart (contentSize, boundsStart, boundsSize, positionStart,
 // If this is not possible, positions the end of the content to align with the start
 // of the position
 export function afterOrBefore (contentSize, boundsStart, boundsSize, positionStart, positionSize) {
-  if(boundsStart === null || boundsStart === undefined || boundsSize === null || boundsSize === undefined) {
+  if(boundsStart === null || boundsSize === undefined) {
     return positionStart + positionSize;
   }
 
@@ -132,9 +132,20 @@ export function afterOrBefore (contentSize, boundsStart, boundsSize, positionSta
 }
 
 export function startOrEnd (contentSize, boundsStart, boundsSize, positionStart, positionSize) {
-  if(boundsStart === null || boundsStart === undefined || boundsSize === null || boundsSize === undefined) {
+  if(boundsStart === null || boundsSize === undefined) {
     return positionStart;
   }
 
   return positionStart + contentSize <= boundsStart + boundsSize ? positionStart : positionStart + positionSize - contentSize;
+}
+
+export function minWithinBounds(minStart, minEnd) {
+  return (contentSize, boundsStart, boundsSize, positionStart, positionSize) => {
+    if(boundsStart === null || boundsSize === undefined) {
+      return positionStart;
+    }
+
+    //TODO
+    return positionStart;
+  }
 }

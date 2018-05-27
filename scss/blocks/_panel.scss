@@ -1,7 +1,7 @@
 @import '../theme';
 
 $cText: $cBodyCopy;
-$cBorder: $colour10;
+$cBorder: $colour2;
 $cBG: $colour1;
 
 $cDarkText: $cText;
@@ -10,7 +10,7 @@ $cDarkBG: $colour7;
 
 .panel {
   background: $cBG;
-  border: 0.2rem solid $cBorder;
+  border: 0.1rem solid $cBorder;
   font-size: 2rem;
   display: flex;
   flex-flow: column;
@@ -38,6 +38,8 @@ $cDarkBG: $colour7;
     line-height: 1;
     font-size: 1.45rem;
     font-weight: bold;
+    background: $colour7;
+    white-space: nowrap;
 
     &_theme_dark {
       border-bottom-color: $cDarkBorder;

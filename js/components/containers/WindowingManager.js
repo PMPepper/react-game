@@ -8,6 +8,8 @@ import WithStateHandlersComponent from '../highOrderComponents/WithStateHandlers
 //Helpers
 import {cloneElementWithElementProps} from '../../helpers/React';
 
+//TODO pass bounds to children (if applicable)
+
 export default compose(
   WithStateHandlersComponent(
     {
@@ -62,9 +64,12 @@ export default compose(
       ]
     }
   )
-)(function WindowingComponent({children, windowingManagerSequence, windowingManagerBringToFront}) {
+)(function WindowingComponent({children, windowingManagerSequence, windowingManagerBringToFront, boundsX, boundsY, boundsWidth, boundsHeight}) {
   const childArr = React.Children.toArray(children);
   const keyToChildMap = {};
+  const bounds = {
+    boundsX, boundsY, boundsWidth, boundsHeight
+  }
 
 
   //map children by their keys
@@ -86,6 +91,6 @@ export default compose(
       }
     };
 
-    return cloneElementWithElementProps(child, childElementProps);
+    return cloneElementWithElementProps(child, childElementProps, bounds);
   })
 });

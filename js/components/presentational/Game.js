@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import Text from '../containers/Text';
 import SystemRenderer from '../containers/SystemRenderer';
 import ContextMenu from '../containers/ContextMenu';
-import Panel from '../containers/Panel';
+import Window from '../containers/Window';
 import WindowingManager from '../containers/WindowingManager';
 
 //Presentational
@@ -42,26 +42,27 @@ export default function Game({systemBodies, factionSystemBodies, element, setEle
       boundsHeight={height}
       positionX={contextMenu.x}
       positionY={contextMenu.y}
-      positionWidth={0}
-      positionHeight={0}
+      //positionWidth={0}
+      //positionHeight={0}
       doRequestClose={() => {
         setContextMenu(null, null);
       }}
     />}
-    <WindowingManager>
-      <div style={{position: 'fixed', left: '20px', top: '20px'}}>
-        <Panel title={'Hello world'}>
-          This is a panel
-        </Panel>
-      </div>
-      <div style={{position: 'fixed', left: '90px', top: '90px'}}>
-        <Panel title={'Hello again world'}>
-          This is another panel
-        </Panel>
-      </div>
-      <Panel title={'Hello again world panel'} elementProps={{style: {position: 'fixed', left: '200px', top: '200px'}}}>
+    <WindowingManager
+      boundsX={0}
+      boundsY={0}
+      boundsWidth={width}
+      boundsHeight={height}
+    >
+      <Window title={'Hello world'} positionX={10} positionY={10}>
+        This is a panel
+      </Window>
+      <Window title={'Hello again world'} positionX={90} positionY={90}>
+        This is another panel
+      </Window>
+      <Window title={'Hello again world panel'} positionX={700} positionY={300}>
         This is just a panel
-      </Panel>
+      </Window>
     </WindowingManager>
     {/*>*/}
   </div>

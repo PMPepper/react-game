@@ -19,7 +19,7 @@ export function isDOMElement(element) {
   return typeof(element.type) === 'string';
 }
 
-export function cloneElementWithElementProps(element, props) {
+export function cloneElementWithElementProps(element, props, otherProps = null) {
   if(isDOMElement(element)) {
     return React.cloneElement(element, mergeElementProps(
       element.props,
@@ -30,7 +30,8 @@ export function cloneElementWithElementProps(element, props) {
       elementProps: mergeElementProps(
         element.props.elementProps,
         props
-      )
+      ),
+      ...otherProps
     });
   }
 }
