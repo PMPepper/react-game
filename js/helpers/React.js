@@ -69,12 +69,28 @@ export function mergeElementProps(props1 = {}, props2 = {}) {
     let key = keys[i];
     let value = props2[key];
 
-    if(mergedProps.hasOwnProperty(key) && ((mergedProps[key] instanceof Function) && (value instanceof Function))) {
-      mergedProps[key] = combineFunctions(mergedProps[key], value);
+    if(key === 'className') {
+      mergedProps.className = mergeClassName(mergedProps.className, value);
     } else {
-      mergedProps[key] = value;
+      if(mergedProps.hasOwnProperty(key) && ((mergedProps[key] instanceof Function) && (value instanceof Function))) {
+        mergedProps[key] = combineFunctions(mergedProps[key], value);
+      } else {
+        mergedProps[key] = value;
+      }
     }
   }
 
   return mergedProps;
+}
+
+export function mergeClassName(cls1, cls2) {
+  if(cls1 && !cls2) {
+    return cls1
+  } else if(!cls1 && cls2) {
+    return cls2
+  } else if(cls1 && cls2) {
+    return `${cls1} ${cls2}`;
+  }
+
+  return null;
 }

@@ -4,6 +4,7 @@ import OrbitTypes from '../../consts/OrbitTypes';
 import SystemBodyTypes from '../../consts/SystemBodyTypes';
 
 import {systemBodiesOfTypeInSystem} from '../../helpers/App';
+import {mergeClassName} from '../../helpers/React';
 
 
 export default function SystemRenderer({onSystemBodiesClicked, ...props}) {
@@ -19,7 +20,7 @@ export default function SystemRenderer({onSystemBodiesClicked, ...props}) {
   return <canvas
     {...elementProps}
     onClick={null}//prevent 'real' click handler
-    className={`systemRenderer`}//TODO merge in element props?
+    className={mergeClassName('systemRenderer', elementProps.className)}//TODO merge in element props?
     width={width}
     height={height}
     onMouseUp={(e) => {
