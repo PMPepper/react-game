@@ -9,6 +9,7 @@ export default function({
 } = {}) {
   return (PresentationalComponent) => {
     const Component = ({keyboardInputOnKeyDown, keyboardInputOnKeyUp, keyboardInputBlur, ...props}) => {
+      //TODO merge props into element using elementProps instead of using separate DOM element? 
       return <DOMComponent tabIndex={0} autoFocus={true} onKeyDown={keyboardInputOnKeyDown} onKeyUp={keyboardInputOnKeyUp} onBlur={keyboardInputBlur}>
         <PresentationalComponent {...props} />
       </DOMComponent>

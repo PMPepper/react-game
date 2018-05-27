@@ -50,7 +50,7 @@ export default compose(
       }
     },
     {
-      mapProps: ({elementProps, ...props}) => {
+      mapProps: ({elementProps, children, ...props}) => {
         const {selectedItems, setSelectedItem, openSelectedItem, closeCurrentLevel, doRequestClose, items} = props;
         const activeLevel = selectedItems.length - 1;
 

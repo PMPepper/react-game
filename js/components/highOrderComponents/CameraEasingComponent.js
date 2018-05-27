@@ -46,7 +46,7 @@ export default function CameraEasingComponent({
             };
           }
         ],
-        mapProps: ({realX, realY, realZoom, ...rest}) => {
+        mapProps: ({realX, realY, realZoom, tick, ...rest}) => {
           return {
             ...rest,
             x: realX,

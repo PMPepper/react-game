@@ -76,17 +76,11 @@ export default function PositionedElementComponent({
               positionHeight: bounds.bottom - bounds.top,
             };
           }
-        ]
+        ],
+        mapProps: ({tick, ...rest}) => {
+          return rest;
+        }
       })
     )(Component);
   };
 }
-
-/*mapLinkedProps = (props, child, showPositionedElement) => {
-  return props;
-},
-mapChildProps = (props, child, showPositionedElement) => {
-  return {
-    key: child.key || 'child'
-  }
-}*/

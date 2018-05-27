@@ -14,11 +14,11 @@ export default function SystemRenderer({setElement, onSystemBodiesClicked, ...pr
     width, height, cx, cy, bgImg, onMouseDown, onMouseUp, onMouseMove, onClick,
     setMouseDownPos, setMouseMovePos, clearMousePos, isClickPrevented, isClickStarted,
     mouseDownX, mouseDownY,
-    ...rest
+    elementProps
   } = props;
 
   return <canvas
-    {...rest}
+    {...elementProps}
     className="systemRenderer"
     width={width}
     height={height}

@@ -6,6 +6,9 @@ import {connect} from 'react-redux';
 import WithStateHandlersComponent from './WithStateHandlersComponent';
 import KeyboardInputComponent from '../highOrderComponents/KeyboardInputComponent';
 
+//Helpers
+import {mergeElementProps} from '../../helpers/React';
+
 export default function CameraControlsComponent({
   upKeys = [38, 87],
   rightKeys = [39, 68],
@@ -75,19 +78,29 @@ export default function CameraControlsComponent({
             return updateCameraFromInput(keyboard, x, y, zoom);
           }
         ],
-        mapProps: ({setZoom, keyboard, updateCameraFromInput, startMouseDrag, mouseDragStartX, mouseDragStartY, mouseDragDeltaX, mouseDragDeltaY, isMouseDragging, doMouseDrag, endMouseDrag, doMouseWheel, ...props}) => {
+        mapProps: ({
+          setZoom, keyboard, updateCameraFromInput,
+          mouseDragStartX, mouseDragStartY, mouseDragDeltaX, mouseDragDeltaY, isMouseDragging,
+          startMouseDrag, doMouseDrag, endMouseDrag, doMouseWheel,
+          elementProps, tick, ...props
+        }) => {
           return {
             ...props,
-            onMouseDown: (e) => {
-              startMouseDrag(e.clientX, e.clientY);
-            },
-            onMouseMove: isMouseDragging ? (e) => {
-              doMouseDrag(e.clientX, e.clientY);
-            } : null,
-            onMouseUp: isMouseDragging ? endMouseDrag : null,
-            onWheel: (e) => {
-              doMouseWheel(e.clientX, e.clientY, e.deltaY);
-            }
+            elementProps: mergeElementProps(
+              elementProps,
+              {
+                onMouseDown: (e) => {
+                  startMouseDrag(e.clientX, e.clientY);
+                },
+                onMouseMove: isMouseDragging ? (e) => {
+                  doMouseDrag(e.clientX, e.clientY);
+                } : null,
+                onMouseUp: isMouseDragging ? endMouseDrag : null,
+                onWheel: (e) => {
+                  doMouseWheel(e.clientX, e.clientY, e.deltaY);
+                }
+              }
+            )
           };
         }
       })

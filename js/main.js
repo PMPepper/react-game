@@ -66,7 +66,6 @@ store.dispatch(setCulture(lang_enGB.culture, lang_enGB.strings));
 monitorDevicePixelRatio(store, 'device.pixelRatio', setPixelRatio);
 
 
-
 //Initialise the app
 render(
   <Provider store={store}>
@@ -74,7 +73,6 @@ render(
   </Provider>,
   document.getElementById('app')
 );
-
 
 import {tempInitGameState} from './temp';
 

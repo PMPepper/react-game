@@ -27,7 +27,9 @@ export default function Game({systemBodies, factionSystemBodies, element, setEle
       y={0}
       width={width}
       height={height-50}
-      onContextMenu={(e) => {e.preventDefault()}}
+      elementProps={{
+        onContextMenu: (e) => {e.preventDefault()}
+      }}
       onSystemBodiesClicked={setContextMenu}
     />
     {contextMenu && <ContextMenu
