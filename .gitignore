@@ -5,3 +5,4 @@ js/helpers/_archive/
 js/components/containers/_archive/
 develop/
 js/components/highOrderComponents/_legacy/
+js/components/presentational/_legacy/
