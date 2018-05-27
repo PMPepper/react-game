@@ -7,3 +7,4 @@ develop/
 js/components/highOrderComponents/_legacy/
 js/components/presentational/_legacy/
 js/components/factories/_legacy/
+js/components/containers/_legacy/
