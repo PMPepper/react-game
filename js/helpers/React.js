@@ -11,6 +11,30 @@ export function isDOMComponent(component) {
   return component.hasOwnProperty('type') && typeof(component.type) == 'string';
 }
 
+export function isDOMElement(element) {
+  if(!React.isValidElement(element)) {
+    throw new Error('This is not a valid react element');
+  }
+
+  return typeof(element.type) === 'string';
+}
+
+export function cloneElementWithElementProps(element, props) {
+  if(isDOMElement(element)) {
+    return React.cloneElement(element, mergeElementProps(
+      element.props,
+      props
+    ));
+  } else {
+    return React.cloneElement(element, {
+      elementProps: mergeElementProps(
+        element.props.elementProps,
+        props
+      )
+    });
+  }
+}
+
 //const reactChildProps = ['props', 'ref', 'type', 'children'];
 const reactChildProps = (key, value) => {
   switch(typeof(value)) {

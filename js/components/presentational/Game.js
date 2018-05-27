@@ -7,6 +7,7 @@ import Text from '../containers/Text';
 import SystemRenderer from '../containers/SystemRenderer';
 import ContextMenu from '../containers/ContextMenu';
 import Panel from '../containers/Panel';
+import WindowingManager from '../containers/WindowingManager';
 
 //Presentational
 
@@ -47,10 +48,21 @@ export default function Game({systemBodies, factionSystemBodies, element, setEle
         setContextMenu(null, null);
       }}
     />}
-    {/*<div style={{position: 'fixed', left: '20px', top: '20px'}}>
-      <Panel title={'Hello world'}>
-        This is a panel
+    <WindowingManager>
+      <div style={{position: 'fixed', left: '20px', top: '20px'}}>
+        <Panel title={'Hello world'}>
+          This is a panel
+        </Panel>
+      </div>
+      <div style={{position: 'fixed', left: '90px', top: '90px'}}>
+        <Panel title={'Hello again world'}>
+          This is another panel
+        </Panel>
+      </div>
+      <Panel title={'Hello again world panel'} elementProps={{style: {position: 'fixed', left: '200px', top: '200px'}}}>
+        This is just a panel
       </Panel>
-    </div>*/}
+    </WindowingManager>
+    {/*>*/}
   </div>
 }
