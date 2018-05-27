@@ -54,15 +54,22 @@ export default compose(
       })
     },
     {
-      mapProps: ({setMouseDownPos, setMouseMovePos, clearMousePos, elementProps, ...props}) => {
+      mapProps: ({setMouseDownPos, setMouseMovePos, clearMousePos, elementProps, setElement, ...props}) => {
         return {
           ...props,
           elementProps: mergeElementProps(
             elementProps,
             {
+              ref: setElement,
               onMouseDown: setMouseDownPos,
               onMouseMove: setMouseMovePos,
-              onMouseUp: clearMousePos
+              onMouseUp: clearMousePos,
+              onClick: (e, onScreenSystemBodyPositions) => {
+                if(props.onSystemBodiesClicked) {//find screen objects close to mouse
+                  const clickedSystemBodies = filterCoordsByProximity(e.clientX, e.clientY, 1, onScreenSystemBodyPositions);
+                  props.onSystemBodiesClicked(e, clickedSystemBodies);
+                }
+              }
             }
           )
         };
@@ -74,3 +81,19 @@ export default compose(
 )(
   SystemRenderer
 );
+
+
+const MIN_COORD_DIST = 4;
+
+function filterCoordsByProximity(x, y, r, coords) {
+  //const r2 = r * r;
+
+  return coords.filter((coord) => {
+    const dx = x - coord.x;
+    const dy = y - coord.y;
+
+    const radius = Math.max(coord.radius || 0, MIN_COORD_DIST) + r;
+
+    return ((dx * dx) + (dy * dy)) < (radius * radius);
+  })
+}

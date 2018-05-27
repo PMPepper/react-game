@@ -6,33 +6,25 @@ import SystemBodyTypes from '../../consts/SystemBodyTypes';
 import {systemBodiesOfTypeInSystem} from '../../helpers/App';
 
 
-export default function SystemRenderer({setElement, onSystemBodiesClicked, ...props}) {
+export default function SystemRenderer({onSystemBodiesClicked, ...props}) {
   const onScreenSystemBodyPositions = render(props);
 
   const {
     element, style, systemId, systemBodies, factionSystemBodies, zoom, x, y,
-    width, height, cx, cy, bgImg, onMouseDown, onMouseUp, onMouseMove, onClick,
-    setMouseMovePos, isClickPrevented, isClickStarted,
-    mouseDownX, mouseDownY,
+    width, height, cx, cy, bgImg,
+    isClickPrevented, isClickStarted,
     elementProps
   } = props;
 
   return <canvas
     {...elementProps}
-    className="systemRenderer"
+    onClick={null}//prevent 'real' click handler
+    className={`systemRenderer`}//TODO merge in element props?
     width={width}
     height={height}
-    style={style}
-    ref={setElement}
     onMouseUp={(e) => {
-      //TODO move this into container?
       if(isClickStarted && !isClickPrevented) {
-        onClick && onClick(e);
-
-        if(onSystemBodiesClicked) {//find screen objects close to mouse
-          const clickedSystemBodies = filterCoordsByProximity(e.clientX, e.clientY, 1, onScreenSystemBodyPositions);
-          onSystemBodiesClicked(e, clickedSystemBodies);
-        }
+        elementProps.onClick && elementProps.onClick(e, onScreenSystemBodyPositions);
       }
 
       elementProps.onMouseUp && elementProps.onMouseUp(e);
@@ -252,17 +244,4 @@ function screenToSystem(coords, {x, y, cx, cy, width, height, zoom}) {
     x: ((coords.x - (cx * width)) / zoom) + x,
     y: ((coords.y - (cy * height)) / zoom) + y
   }
-}
-
-function filterCoordsByProximity(x, y, r, coords) {
-  //const r2 = r * r;
-
-  return coords.filter((coord) => {
-    const dx = x - coord.x;
-    const dy = y - coord.y;
-
-    const radius = Math.max(coord.radius || 0, 3) + r;
-
-    return ((dx * dx) + (dy * dy)) < (radius * radius);
-  })
 }
