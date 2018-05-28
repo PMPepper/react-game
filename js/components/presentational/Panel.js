@@ -15,7 +15,7 @@ import {mergeElementProps} from '../../helpers/React';
 export default function Panel({
   baseClass, baseClassName, getElementClass,
   children, title = null, headOptions = null,
-  component: Component = 'article', titleComponent: TitleComponent = 'h3', minHeight = null,
+  component: Component = 'article', titleComponent: TitleComponent = 'h3', titleProps = null, minHeight = null,
   elementProps = null
 }) {
   //TODO component might not be html, should check and apply generic params differently if it isn't
@@ -26,7 +26,7 @@ export default function Panel({
     })}
   >
     <div className={getElementClass('head')}>
-      {title && <TitleComponent className={getElementClass('title')}>{title}</TitleComponent>}
+      {title && <TitleComponent className={getElementClass('title')} {...titleProps}>{title}</TitleComponent>}
       {headOptions && <span className={getElementClass(['head', 'options'])}>{headOptions}</span>}
     </div>
     <div className={getElementClass('body')}>

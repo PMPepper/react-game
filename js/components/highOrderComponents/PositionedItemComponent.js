@@ -145,6 +145,29 @@ export function minWithinBounds(minStart, minEnd) {
       return positionStart;
     }
 
+
+    if(minStart < 0) {
+      if(boundsStart + minStart > positionStart) {
+        return boundsStart + minStart;
+      }
+    } else {
+      if(boundsStart + minStart - contentSize > positionStart) {
+        return boundsStart + minStart - contentSize;
+      }
+    }
+
+    const boundsEnd = boundsStart + boundsSize;
+
+    if(minEnd < 0) {
+      if(positionStart + contentSize + minEnd > boundsEnd) {
+        return boundsEnd - minEnd - contentSize;
+      }
+    } else {
+      if(positionStart + minEnd > boundsEnd) {
+        return boundsEnd - minEnd;
+      }
+    }
+
     //TODO
     return positionStart;
   }
