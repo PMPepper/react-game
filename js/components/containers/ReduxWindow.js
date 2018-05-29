@@ -96,7 +96,6 @@ export default compose(
           ...rest,
           positionX: x,
           positionY: y,
-          title: '[flibble]',
           titleProps: {//add dragging handlers
             onMouseDown: (e) => {
               focusWindow();

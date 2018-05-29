@@ -61,8 +61,8 @@ export default function Game({systemBodies, factionSystemBodies, element, setEle
       boundsWidth={width}
       boundsHeight={height}
     >
-      <div key="ui.colonyManagementWindow" style={{background: '#FF99FF'}}>Hello world colony management</div>
-      <div key="ui.systemOverviewWindow" style={{background: '#FFFF99'}}>Hello world system overview</div>
+      <div key="ui.colonyManagementWindow" windowProps={{title: '[colony management]'}} style={{background: '#FF99FF'}}>Hello world colony management</div>
+      <div key="ui.systemOverviewWindow" windowProps={{title: '[systemOverview]'}} style={{background: '#FFFF99'}}>Hello world system overview</div>
     </ReduxWindowingManager>
     {/*<WindowingManager
       boundsX={0}

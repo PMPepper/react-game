@@ -37,8 +37,14 @@ export default compose(
   return state.map(key => {
     const child = childrenKeyMap[key];
 
-    return <ReduxWindow key={key} reducerName={key} focusWindow={() =>{focusWindow(key)}} boundsX={boundsX} boundsY={boundsY} boundsWidth={boundsWidth} boundsHeight={boundsHeight}>
-      {child}
+    if(!child) {
+      return null;
+    }
+
+    const {windowProps, ...childProps} = child.props;
+
+    return <ReduxWindow {...windowProps} key={key} reducerName={key} focusWindow={() =>{focusWindow(key)}} boundsX={boundsX} boundsY={boundsY} boundsWidth={boundsWidth} boundsHeight={boundsHeight}>
+      {React.createElement(child.type, childProps)}
     </ReduxWindow>;
   });
 });
