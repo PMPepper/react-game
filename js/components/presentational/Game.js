@@ -6,12 +6,13 @@ import PropTypes from 'prop-types';
 import Text from '../containers/Text';
 import SystemRenderer from '../containers/SystemRenderer';
 import ContextMenu from '../containers/ContextMenu';
-import Window from '../containers/Window';
-import WindowingManager from '../containers/WindowingManager';
+//import Window from '../containers/Window';
+//import WindowingManager from '../containers/WindowingManager';
 
 import ReduxWindowingManager from '../containers/ReduxWindowingManager';
 
 import GameToolbar from '../containers/GameToolbar';
+import ColonyManagement from './ColonyManagement';
 
 //Presentational
 
@@ -61,7 +62,7 @@ export default function Game({systemBodies, factionSystemBodies, element, setEle
       boundsWidth={width}
       boundsHeight={height}
     >
-      <div key="ui.colonyManagement.window" windowProps={{title: '[colony management]'}} style={{background: '#FF99FF'}}>Hello world colony management</div>
+      <ColonyManagement key="ui.colonyManagement.window" windowProps={{title: '[colony management]'}} />
       <div key="ui.systemOverview.window" windowProps={{title: '[systemOverview]'}} style={{background: '#FFFF99'}}>Hello world system overview</div>
     </ReduxWindowingManager>
     {/*<WindowingManager

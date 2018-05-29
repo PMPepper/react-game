@@ -5,6 +5,7 @@
 import {combineReducers} from 'redux';
 import makeWindowingManagerReducer from './ui/makeWindowingManager';
 import makeWindowReducer from './ui/makeWindow';
+import makeTabsReducer from './ui/makeTabs';
 
 
 //////////////////
@@ -64,7 +65,8 @@ export default combineReducers({
   },
   gameWM: makeWindowingManagerReducer('ui.gameWM'),
   colonyManagement: combineReducers({
-    window: makeWindowReducer('ui.colonyManagement.window')
+    window: makeWindowReducer('ui.colonyManagement.window'),
+    tabs: makeTabsReducer('ui.colonyManagement.tabs')
   }),
   systemOverview: combineReducers({
     window: makeWindowReducer('ui.systemOverview.window')
