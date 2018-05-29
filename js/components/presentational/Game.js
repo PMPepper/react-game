@@ -9,6 +9,10 @@ import ContextMenu from '../containers/ContextMenu';
 import Window from '../containers/Window';
 import WindowingManager from '../containers/WindowingManager';
 
+import ReduxWindowingManager from '../containers/ReduxWindowingManager';
+
+import GameToolbar from '../containers/GameToolbar';
+
 //Presentational
 
 
@@ -20,6 +24,7 @@ export default function Game({systemBodies, factionSystemBodies, element, setEle
     className="app"
     ref={setElement}
   >
+    <GameToolbar />
     <SystemRenderer
       systemId="1"
       systemBodies={systemBodies}
@@ -48,7 +53,18 @@ export default function Game({systemBodies, factionSystemBodies, element, setEle
         setContextMenu(null, null);
       }}
     />}
-    <WindowingManager
+
+    <ReduxWindowingManager
+      reducerName="ui.gameWM"
+      boundsX={0}
+      boundsY={0}
+      boundsWidth={width}
+      boundsHeight={height}
+    >
+      <div key="ui.colonyManagementWindow" style={{background: '#FF99FF'}}>Hello world colony management</div>
+      <div key="ui.systemOverviewWindow" style={{background: '#FFFF99'}}>Hello world system overview</div>
+    </ReduxWindowingManager>
+    {/*<WindowingManager
       boundsX={0}
       boundsY={0}
       boundsWidth={width}
@@ -63,7 +79,7 @@ export default function Game({systemBodies, factionSystemBodies, element, setEle
       <Window title={'Hello again world panel'} positionX={300} positionY={300}>
         This is just a panel
       </Window>
-    </WindowingManager>
+    </WindowingManager>*/}
     {/*>*/}
   </div>
 }

@@ -2,7 +2,9 @@
 // Imports      //
 //////////////////
 
-
+import {combineReducers} from 'redux';
+import makeWindowingManagerReducer from './ui/makeWindowingManager';
+import makeWindowReducer from './ui/makeWindow';
 
 
 //////////////////
@@ -45,22 +47,25 @@ export function tick() {
 // Reducer/s  //
 ////////////////
 
-export default function (state = DEFAULT_STATE, action) {
-  switch(action.type) {
-    case SET_CONTROLLED_FACTION:
-      return {
-        ...state,
-        controlledFactionId: action.controlledFactionId
-      };
-    case TICK:
-      return {
-        ...state,
-        tick: state.tick+1
-      };
-  }
+export default combineReducers({
+  tick: (state = 0, action) => {
+    if(action.type === TICK) {
+      return state + 1;
+    }
 
-  return state;
-}
+    return state;
+  },
+  controlledFactionId: (state = null, action) => {
+    if(action.type === SET_CONTROLLED_FACTION) {
+      return action.controlledFactionId;
+    }
+
+    return state;
+  },
+  gameWM: makeWindowingManagerReducer('ui.gameWM'),
+  colonyManagementWindow: makeWindowReducer('ui.colonyManagementWindow'),
+  systemOverviewWindow: makeWindowReducer('ui.systemOverviewWindow'),
+});
 
 
 ////////////////

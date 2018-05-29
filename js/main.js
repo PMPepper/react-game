@@ -1,5 +1,5 @@
 //Constants
-const DO_LOG = false;
+const DO_LOG = true;
 
 //polyfills
 import 'babel-polyfill';
