@@ -4,6 +4,9 @@ import PropTypes from 'prop-types';
 //Containers
 import Text from '../containers/Text';
 
+//Presentational
+import Icon from '../presentational/Icon';
+
 
 //Helpers
 import {propTypes} from '../highOrderComponents/BEMComponent';
@@ -15,7 +18,7 @@ import {mergeElementProps} from '../../helpers/React';
 export default function Panel({
   baseClass, baseClassName, getElementClass,
   children, title = null, headOptions = null,
-  component: Component = 'article', titleComponent: TitleComponent = 'h3', titleProps = null, minHeight = null,
+  component: Component = 'article', titleComponent: TitleComponent = 'h3', headProps = null, minHeight = null,
   elementProps = null
 }) {
   //TODO component might not be html, should check and apply generic params differently if it isn't
@@ -25,9 +28,14 @@ export default function Panel({
       className: baseClass+(elementProps && elementProps.className ? ' '+elementProps.className : '')
     })}
   >
-    <div className={getElementClass('head')}>
-      {title && <TitleComponent className={getElementClass('title')} {...titleProps}>{title}</TitleComponent>}
-      {headOptions && <span className={getElementClass(['head', 'options'])}>{headOptions}</span>}
+    <div className={getElementClass('head')} {...headProps}>
+      {title && <TitleComponent className={getElementClass('title')}>{title}</TitleComponent>}
+      {headOptions && headOptions.length > 0 && <span className={getElementClass(['head', 'options'])}>{headOptions.map(headOption => {
+        return <button key={headOption.key} className={getElementClass(['head', 'options', 'btn'])} onClick={headOption.onClick} onMouseDown={e => {e.stopPropagation();}}>
+          <Icon icon={headOption.icon} />
+          {headOption.label && <span className="u-offscreen">{headOption.label}</span>}
+        </button>
+      })}</span>}
     </div>
     <div className={getElementClass('body')}>
       {children}
@@ -36,6 +44,12 @@ export default function Panel({
   </Component>
 }
 
+const headOptionShape = PropTypes.shape({
+  key: PropTypes.string.isRequired,
+  //icon: ,//TODO icon shape
+  onClick: PropTypes.func,
+  label: isReactRenderable
+})
 
 Panel.propTypes = {
   ...propTypes,

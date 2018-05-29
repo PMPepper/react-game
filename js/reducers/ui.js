@@ -63,8 +63,12 @@ export default combineReducers({
     return state;
   },
   gameWM: makeWindowingManagerReducer('ui.gameWM'),
-  colonyManagementWindow: makeWindowReducer('ui.colonyManagementWindow'),
-  systemOverviewWindow: makeWindowReducer('ui.systemOverviewWindow'),
+  colonyManagement: combineReducers({
+    window: makeWindowReducer('ui.colonyManagement.window')
+  }),
+  systemOverview: combineReducers({
+    window: makeWindowReducer('ui.systemOverview.window')
+  }),
 });
 
 

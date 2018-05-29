@@ -24,15 +24,30 @@ $cDarkBG: $colour7;
     }
   }*/
 
-  &-title {
+  &-head {
+    display: flex;
     padding: $basePadding * 0.5;
     border-bottom: 0.1rem solid $cBorder;
-    line-height: 1;
-    font-size: 1.45rem;
-    font-weight: bold;
     background: $colour7;
-    white-space: nowrap;
     cursor: default;
+
+    font-size: 1.45rem;
+    line-height: 1;
+    white-space: nowrap;
+
+    &-options {
+
+
+      &-btn {
+        @extend .g-blankButton;
+      }
+    }
+  }
+
+  &-title {
+
+    font-weight: bold;
+    flex-grow: 1;
   }
 
   &-body {

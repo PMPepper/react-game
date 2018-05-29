@@ -96,12 +96,13 @@ export default compose(
           ...rest,
           positionX: x,
           positionY: y,
-          titleProps: {//add dragging handlers
+          headProps: {//add dragging handlers
             onMouseDown: (e) => {
               focusWindow();
               setIsMouseDown(true, e.clientX, e.clientY);
             }
-          }
+          },
+          headOptions: [{key: 'closeWindow', label: '[close window]', onClick: rest.closeWindow, icon: 'window-close'}]
         };
       }
     }

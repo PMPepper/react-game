@@ -9,7 +9,7 @@ import ReduxWindow from './ReduxWindow';
 
 
 //Reducers
-import {focusWindow} from '../../reducers/ui/makeWindowingManager';
+import {focusWindow, closeWindow} from '../../reducers/ui/makeWindowingManager';
 
 //Helpers
 import {resolveObjPath} from '../../helpers/Object';
@@ -22,10 +22,11 @@ export default compose(
     }
   }, (dispatch, {reducerName, ...ownProps}) => {
     return bindActionCreators({
-      focusWindow: (windowName) => (focusWindow(reducerName, windowName))//curry action with reducer name
+      focusWindow: (windowName) => (focusWindow(reducerName, windowName)),//curry action with reducer name
+      closeWindow: (windowName) => (closeWindow(reducerName, windowName))//curry action with reducer name
     }, dispatch);
   })
-)(function ReduxWindowingManager({children, state, focusWindow, boundsX, boundsY, boundsWidth, boundsHeight}) {
+)(function ReduxWindowingManager({children, state, focusWindow, closeWindow, boundsX, boundsY, boundsWidth, boundsHeight}) {
   const childrenKeyMap = {};
 
   React.Children.forEach(children, (child) => {
@@ -43,7 +44,7 @@ export default compose(
 
     const {windowProps, ...childProps} = child.props;
 
-    return <ReduxWindow {...windowProps} key={key} reducerName={key} focusWindow={() =>{focusWindow(key)}} boundsX={boundsX} boundsY={boundsY} boundsWidth={boundsWidth} boundsHeight={boundsHeight}>
+    return <ReduxWindow {...windowProps} key={key} reducerName={key} focusWindow={() =>{focusWindow(key)}} closeWindow={() =>{closeWindow(key)}} boundsX={boundsX} boundsY={boundsY} boundsWidth={boundsWidth} boundsHeight={boundsHeight}>
       {React.createElement(child.type, childProps)}
     </ReduxWindow>;
   });

@@ -92,7 +92,7 @@ export default compose(
       }) => {
         return {
           ...rest,
-          titleProps: {//add dragging handlers
+          headProps: {//add dragging handlers
             onMouseDown: (e) => {
               setIsMouseDown(true, e.clientX, e.clientY);
             }

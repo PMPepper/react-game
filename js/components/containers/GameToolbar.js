@@ -13,12 +13,12 @@ const buttons = [
   {
     name: 'openColonyManagementWindow',
     action: 'openWindow',
-    actionArgs: ['ui.gameWM', 'ui.colonyManagementWindow']
+    actionArgs: ['ui.gameWM', 'ui.colonyManagement.window']
   },
   {
     name: 'openSystemOverviewWindow',
     action: 'openWindow',
-    actionArgs: ['ui.gameWM', 'ui.systemOverviewWindow']
+    actionArgs: ['ui.gameWM', 'ui.systemOverview.window']
   }
 ];
 
