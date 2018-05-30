@@ -1,3 +1,4 @@
+/*
 import {addPlayer} from './reducers/game/players';
 import {addFaction} from './reducers/game/factions';
 import {addPlayerToFaction} from './reducers/game/factionPlayer';
@@ -10,13 +11,72 @@ import {setTime, advanceTime} from './reducers/game';
 
 import OrbitTypes from './consts/OrbitTypes';
 import SystemBodyTypes from './consts/SystemBodyTypes';
-import FactionPlayerTypes from './consts/FactionPlayerTypes';
 
 import {orbitPeriod} from './helpers/Physics';
 import {keyOf} from './helpers/Object';
 import {volumeOfSphere} from './helpers/Maths';
 
 import systems from './data/systems';
+*/
+import FactionPlayerTypes from './consts/FactionPlayerTypes';
+
+const worldDefinition = {
+  startDate: '2000-01-01T00:00:00',
+  factions: [{
+    name: 'Humans',
+    //key value pair, where key is 'id' for generation reference (shared between factions) and value is the system,
+    //currently only known systems supported
+    startingSystems: {
+      sol: {
+        type: 'known',
+        name: 'Sol',
+        //factionName: 'Crazytown',
+        /*nameMap: {
+          Earth: 'Bumhole 1'
+        }*/
+      }
+    },
+    startingColonies: [{
+      system: 'sol',//ID from systemsSystems object (the key)
+      body: 'Earth',//body ID (what if random?)
+      population: 10000000000,
+      //TODO
+      //money, structures, minerals, fuel, technology, etc
+    }]
+  }],
+
+  players: [
+    {
+      name: 'Billy',
+      faction: 'Humans',
+      role: FactionPlayerTypes.OWNER
+    }
+  ],
+
+  //To be implemented
+  //system generation properties
+  numSystems: 10,
+  wrecks: 0.1,
+  ruins: 0.02,
+
+  //threats
+  swarmers: 0.1,
+  invaders: 0.1,//probably will be more fine-tuned
+  sentinels: 0.1,
+
+};
+
+
+
+import * as connector from './client/workerClient';
+
+export function tempInitGameState(startGameCallback) {
+  connector.initialise(() => {
+    connector.createWorld(worldDefinition);
+
+    //startGameCallback();
+  });
+}
 
 /*
 import importedAsteroids from './importAsteroids';
@@ -25,6 +85,7 @@ console.log(JSON.stringify(importedAsteroids, null, 2));
 debugger;
 */
 
+/*
 export function tempInitGameState(store) {
   let systemId = 0;
   let bodyId = 0;
@@ -42,17 +103,9 @@ export function tempInitGameState(store) {
   store.dispatch(setControlledFaction(1));
 
   //Initialise the worker
-  var myWorker = new Worker('../js/worker.js');
-
-
-  myWorker.onmessage = function(e) {
-    console.log('Message received from worker: ', e.data);
-  }
-
-  setTimeout(() => {
-    myWorker.postMessage([Math.round(Math.random() * 100), Math.round(Math.random() * 100)]);
-    console.log('Message posted to worker');
-  }, 1000);
+  client.initialise(() => {
+    console.log('client initialised');
+  });
   //End worker
 
   const factionIdByName = {
@@ -291,3 +344,4 @@ function getNumberInRange(a, b, distribution = 1) {
 
   return min + ((max - min) * random);
 }
+*/

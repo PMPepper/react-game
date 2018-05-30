@@ -30,12 +30,9 @@ example random asteroid belt:
 },
 */
 
-const systems = [
-  {
+const systems = {
+  Sol: {
     "name":"Sol",
-    "factionNames": {
-      "martian": "Wibble"
-    },
     "bodies":[
       {
         "name":"Sol A",
@@ -93,8 +90,7 @@ const systems = [
           "type": "regular",
           "radius": 149600000000,
           "offset": 0
-        },
-        "startingColony": ["human"]
+        }
       },
       {
         "name": "Luna",
@@ -114,9 +110,6 @@ const systems = [
       },
       {
         "name": "Mars",
-        "factionNames": {
-          "martian": "Wobble-bottom 4"
-        },
         "type": "planet",
         "parent": "Sol A",
         "mass": 6.4171e23,
@@ -129,8 +122,7 @@ const systems = [
           "type": "regular",
           "radius": 227939200000,
           "offset": 0.23
-        },
-        "startingColony": ["martian"]
+        }
       },
       {
         "name": "Phobos",
@@ -231,6 +223,6 @@ const systems = [
       }
     ]
   }
-];
+};
 
 export default systems;

@@ -66,18 +66,21 @@ store.dispatch(setCulture(lang_enGB.culture, lang_enGB.strings));
 monitorDevicePixelRatio(store, 'device.pixelRatio', setPixelRatio);
 
 
-//Initialise the app
-render(
-  <Provider store={store}>
-    <Game />
-  </Provider>,
-  document.getElementById('app')
-);
+
+
 
 import {tempInitGameState} from './temp';
 
 
-tempInitGameState(store);
+tempInitGameState(() => {
+  //Initialise the app
+  render(
+    <Provider store={store}>
+      <Game />
+    </Provider>,
+    document.getElementById('app')
+  );
+});
 
 
 //debugging code
