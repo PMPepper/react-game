@@ -41,6 +41,20 @@ export function tempInitGameState(store) {
 
   store.dispatch(setControlledFaction(1));
 
+  //Initialise the worker
+  var myWorker = new Worker('../js/worker.js');
+
+
+  myWorker.onmessage = function(e) {
+    console.log('Message received from worker: ', e.data);
+  }
+
+  setTimeout(() => {
+    myWorker.postMessage([Math.round(Math.random() * 100), Math.round(Math.random() * 100)]);
+    console.log('Message posted to worker');
+  }, 1000);
+  //End worker
+
   const factionIdByName = {
     human: '1',
     martian: '2'
