@@ -39,7 +39,18 @@ export function createWorld(definition) {
   sendMessage(
     MessageTypes.CREATE_WORLD,
     definition,
-    () => {console.log('world created!')}
+    ({data}) => {
+      console.log('world created!: ', data);
+
+      //now connect all players
+      Object.values(data.players).forEach(player => {
+        sendMessage(MessageTypes.CONNECT_PLAYER, {playerId: player.id}, (message) => {
+          console.log('player connected: ', message);
+        });
+      });
+
+      //TODO wait until all players are connected
+    }
   );
 }
 

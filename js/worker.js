@@ -6,27 +6,34 @@ function sendMessageToPlayer(playerId, message) {
   postMessage({playerId, ...message});
 }
 
-function confirmMessageComplete(message) {
+function confirmMessageComplete(message, data = null) {
   if(message.id) {
     postMessage({
       type: MessageTypes.COMPLETE,
-      replyId: message.id
+      replyId: message.id,
+      data
     });
   }
 };
 
 Server.initialise(sendMessageToPlayer)
 
+//Process recieved messages
 onmessage = function(e) {
   const message = e.data;
 
   switch(message.type) {
     case MessageTypes.CREATE_WORLD:
-      Server.createWorld(message.data);
+      const createdFactions = Server.createWorld(message.data);
+
+      confirmMessageComplete(message, createdFactions);
+      return;
+    case MessageTypes.CONNECT_PLAYER:
+      //Other server connectors would need to record details about the connected
+      //player, but worker always sends the messages to the same client
+      Server.connectedPlayer(message.data.playerId);
 
       confirmMessageComplete(message);
-
-      //'connect' player?
       return;
     case MessageTypes.ADD_PLAYER_ORDERS:
       Server.addPlayerOrders(message.data.playerId, message.data.orders);

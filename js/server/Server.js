@@ -18,6 +18,7 @@ let store = createStore(
 
 //vars
 let sendMessageToPlayer;
+let serverPhase = 'initialising';
 
 
 export function initialise(aSendMessageToPlayer) {
@@ -25,9 +26,18 @@ export function initialise(aSendMessageToPlayer) {
 }
 
 export function createWorld(definition) {
-  createWorldFunc(store, definition);
+  if(serverPhase !== 'initialising') {
+    throw new Error('Can only create world while Server is in "initialising" phase');
+  }
 
-  
+  return createWorldFunc(store, definition);
+
+  //Now waiting for players to connect
+  serverPhase = 'connecting';
+}
+
+export function connectedPlayer(playerId) {
+  //mark player as connected..
 }
 
 export function getStateForPlayer(playerId) {

@@ -126,9 +126,13 @@ export default function createWorld(store, definition) {
 
   //TODO create the rest of the systems, etc
 
-  console.log('createWorld state: ', store.getState());
+  const state = store.getState();
+  console.log('createWorld state: ', state);
 
-  return;
+  return {
+    factions: state.game.factions,
+    players: state.game.players
+  }
 }
 
 
@@ -141,10 +145,6 @@ function getStartingSystemDefinition(definition) {
   throw new Error('Currently only known systems are implemented');
 }
 
-
-function getSystemBodyNames(definition, factionDefinition) {
-
-}
 
 function normaliseOrbit(orbit, systemBody, systemBodyParent) {
   switch(orbit.type) {
