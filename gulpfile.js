@@ -140,70 +140,78 @@ config.browserSyncBuild = {
     reloadDebounce: 500
 };
 
+//Webpack
+const baseWebpackConfig = {
+  module: {
+    loaders: [
+      {
+        test: /.*.json$/,
+        loader: 'json-loader'
+      },
+      {
+        test: /\.js$/,
+        exclude: /(node_modules)/,
+        loader: 'babel-loader',
+        query: {
+          presets: [
+            ['env', {
+            'targets': {
+              browsers: require('./browsers')
+              }
+            }], 'react'
+          ],
+          plugins: ['transform-runtime', 'transform-object-rest-spread', 'transform-class-properties']
+        }
+      }
+    ]
+  }
+};
+
+const baseWebpackDevConfig = {
+  ...baseWebpackConfig,
+    devtool: 'source-map',
+};
+
+const baseWebpackBuildConfig = {
+  ...baseWebpackConfig,
+  devtool: (config.js.buildSourcemaps.enabled ? 'source-map' : false),
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production')
+    })
+  ]
+};
+
 config.webpack = {
   dev: {
-    devtool: 'source-map',
-    output: {
+      ...baseWebpackDevConfig,
+      output: {
         path: __dirname + "/"+config.js.devOutputPath,
         filename: "scripts.js"
+      }
     },
-    module: {
-      loaders: [
-        {
-          test: /.*.json$/,
-          loader: 'json-loader'
-        },
-        {
-          test: /\.js$/,
-          exclude: /(node_modules)/,
-          loader: 'babel-loader',
-          query: {
-            presets: [
-              ['env', {
-              'targets': {
-                browsers: require('./browsers')
-                }
-              }], 'react'
-            ],
-            plugins: ['transform-runtime', 'transform-object-rest-spread', 'transform-class-properties']
-          }
-        }
-      ]
-    }
-  },
   build: {
-    devtool: (config.js.buildSourcemaps.enabled ? 'source-map' : false),
+    ...baseWebpackBuildConfig,
     output: {
         path: __dirname + "/"+config.js.buildOutputPath,
         filename: "scripts.js"
+    }
+  }
+};
+
+config.webpackWorker = {
+  dev: {
+      ...baseWebpackDevConfig,
+      output: {
+        path: __dirname + "/"+config.js.devOutputPath,
+        filename: "worker.js"
+      }
     },
-    plugins: [
-      new webpack.DefinePlugin({
-        'process.env.NODE_ENV': JSON.stringify('production')
-      })
-    ],
-    module: {
-      loaders: [
-        {
-          test: /.*.json$/,
-          loader: 'json-loader'
-        },
-        {
-          test: /\.js$/,
-          exclude: /(node_modules)/,
-          loader: 'babel-loader',
-          query: {
-            presets: [
-              ['env', {
-              'targets': {
-                browsers: require('./browsers')
-                }
-              }], 'react'
-            ],
-            plugins: ['transform-runtime', 'transform-object-rest-spread', 'transform-class-properties', 'transform-remove-console']
-          }
-        }
-      ]
+  build: {
+    ...baseWebpackBuildConfig,
+    output: {
+        path: __dirname + "/"+config.js.buildOutputPath,
+        filename: "worker.js"
     }
   }
 };
@@ -256,11 +264,22 @@ function gulpImagesSrc() {
 //Define tasks
 
 //-JS tasks
-gulp.task('js-dev', ['js-clean-dev'], () => {
+gulp.task('js-dev', ['js-clean-dev', 'js-worker-dev'], () => {
   return gulpJsSrc()
     .pipe(plumber(config.plumber.js))
     .pipe(config.js.devSourcemaps.enabled ? sourcemaps.init(config.js.devSourcemaps.options) : filter(['**/*']))
-    .pipe(webpackStream(config.webpack.dev, webpack))
+    .pipe(webpackStream((config.webpack.dev instanceof Array) ? {config: config.webpack.dev} : config.webpack.dev, webpack))
+    .pipe(debug())
+    .pipe(config.js.devSourcemaps.enabled ? sourcemaps.write(config.js.devSourcemaps.path, config.js.devSourcemaps.writeOptions) : filter(['**/*']))
+    .pipe(gulp.dest(config.js.devOutputPath+'/'));
+});
+
+gulp.task('js-worker-dev', () => {
+  return gulp.src('js/worker.js')
+    .pipe(plumber(config.plumber.js))
+    .pipe(config.js.devSourcemaps.enabled ? sourcemaps.init(config.js.devSourcemaps.options) : filter(['**/*']))
+    .pipe(webpackStream((config.webpackWorker.dev instanceof Array) ? {config: config.webpackWorker.dev} : config.webpackWorker.dev, webpack))
+    .pipe(debug())
     .pipe(config.js.devSourcemaps.enabled ? sourcemaps.write(config.js.devSourcemaps.path, config.js.devSourcemaps.writeOptions) : filter(['**/*']))
     .pipe(gulp.dest(config.js.devOutputPath+'/'));
 });
@@ -271,11 +290,23 @@ gulp.task('js-watch', ['js-dev'], () => {
   });
 });
 
-gulp.task('js-build', ['js-clean-build'], function() {
+gulp.task('js-build', ['js-clean-build', 'js-worker-build'], function() {
   return gulpJsSrc()
     .pipe(plumber(config.plumber.js))
     //.pipe(config.js.devSourcemaps.enabled ? sourcemaps.init(config.js.devSourcemaps.options) : filter(['**/*']))
-    .pipe(webpackStream(config.webpack.build, webpack))
+    .pipe(webpackStream((config.webpack.build instanceof Array) ? {config: config.webpack.build} : config.webpack.build, webpack))
+    //.pipe(config.js.devSourcemaps.enabled ? sourcemaps.write(config.js.devSourcemaps.path, config.js.devSourcemaps.writeOptions) : filter(['**/*']))
+    .pipe(uglify())
+      .on('error', function (err) { gutil.log(gutil.colors.red('[Error]'), err.toString()); })
+    .pipe(stripDebug())
+    .pipe(gulp.dest(config.js.buildOutputPath+'/'));
+});
+
+gulp.task('js-worker-build', ['js-clean-build'], function() {
+  return gulp.src('js/worker.js')
+    .pipe(plumber(config.plumber.js))
+    //.pipe(config.js.devSourcemaps.enabled ? sourcemaps.init(config.js.devSourcemaps.options) : filter(['**/*']))
+    .pipe(webpackStream((config.webpackWorker.build instanceof Array) ? {config: config.webpackWorker.build} : config.webpackWorker.build, webpack))
     //.pipe(config.js.devSourcemaps.enabled ? sourcemaps.write(config.js.devSourcemaps.path, config.js.devSourcemaps.writeOptions) : filter(['**/*']))
     .pipe(uglify())
       .on('error', function (err) { gutil.log(gutil.colors.red('[Error]'), err.toString()); })

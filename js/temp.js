@@ -142,11 +142,11 @@ export function tempInitGameState(store) {
   //TEMP start timer running to update time
   setInterval(() => {
     store.dispatch(advanceTime(3600));
-  }, (1000/60) * 1000);
+  }, (1000/60) * 1);
 
   setInterval(() => {
     store.dispatch(tick());
-  }, (1000/60) * 1000);
+  }, (1000/60) * 1);
 }
 
 function normaliseOrbit(orbit, systemBody, systemBodyParent) {

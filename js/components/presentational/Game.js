@@ -48,8 +48,6 @@ export default function Game({systemBodies, factionSystemBodies, element, setEle
       boundsHeight={height}
       positionX={contextMenu.x}
       positionY={contextMenu.y}
-      //positionWidth={0}
-      //positionHeight={0}
       doRequestClose={() => {
         setContextMenu(null, null);
       }}
@@ -65,22 +63,5 @@ export default function Game({systemBodies, factionSystemBodies, element, setEle
       <ColonyManagement key="ui.colonyManagement.window" windowProps={{title: '[colony management]'}} />
       <div key="ui.systemOverview.window" windowProps={{title: '[systemOverview]'}} style={{background: '#FFFF99'}}>Hello world system overview</div>
     </ReduxWindowingManager>
-    {/*<WindowingManager
-      boundsX={0}
-      boundsY={0}
-      boundsWidth={width}
-      boundsHeight={height}
-    >
-      <Window title={'Hello world'} positionX={100} positionY={10}>
-        This is a panel
-      </Window>
-      <Window title={'Hello again world'} positionX={200} positionY={70}>
-        This is another panel
-      </Window>
-      <Window title={'Hello again world panel'} positionX={300} positionY={300}>
-        This is just a panel
-      </Window>
-    </WindowingManager>*/}
-    {/*>*/}
   </div>
 }

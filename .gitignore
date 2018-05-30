@@ -10,3 +10,4 @@ js/components/factories/_legacy/
 js/components/containers/_legacy/
 scss/_legacy/
 scss/blocks/_legacy/
+build/
