@@ -11,7 +11,7 @@ let startGameCallback = null;
 let messageIdCounter = 1;
 const responses = {};
 
-function onmessage(e) {
+function serverSendingMessage(e) {
   const message = e.data;
 
   switch (message.type) {
@@ -50,7 +50,7 @@ export function initialise(aStore, aIsLoadedCallback, aStartGameCallback, {path 
   isLoadedCallback = aIsLoadedCallback;
   startGameCallback = aStartGameCallback;
 
-  worker.onmessage = onmessage;
+  worker.onmessage = serverSendingMessage;
 }
 
 export function createWorld(definition) {

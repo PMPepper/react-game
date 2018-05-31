@@ -1,18 +1,15 @@
 import * as Server from './server/Server';
 import MessageTypes from './consts/MessageTypes';
 
-function sendMessageToPlayer(playerId, message) {
-  //send message to a player (if using worker then always send to the same client)
-  postMessage({playerId, ...message});
-}
 
-function sendMessageToAllPlayers(message) {
-  postMessage(message);
-}
+//send message to a player (if using worker then always send to the same client)
+const sendMessageToPlayer = postMessage;
+
 
 function confirmMessageComplete(message, data = null) {
   if(message.id) {
     postMessage({
+      playerId: message.playerId,
       type: MessageTypes.COMPLETE,
       replyId: message.id,
       data
@@ -20,7 +17,6 @@ function confirmMessageComplete(message, data = null) {
   }
 };
 
-Server.initialise(sendMessageToPlayer, sendMessageToAllPlayers);
 
 //Process recieved messages
 onmessage = function(e) {
@@ -47,7 +43,8 @@ onmessage = function(e) {
     case MessageTypes.REQUEST_PLAYER_STATE:
       const playerState = Server.getStateForPlayer(message.data.playerId);
 
-      sendMessageToPlayer(message.data.playerId, {
+      sendMessageToPlayer({
+        playerId: message.data.playerId,
         type: MessageTypes.UPDATE_PLAYER_STATE,
         data: playerState,
         replyId: message.id
@@ -64,8 +61,9 @@ onmessage = function(e) {
   }
 }
 
-
+//Start the server
+Server.initialise(sendMessageToPlayer);
 
 
 //Finally tell the client the worker is loaded
-postMessage({type: MessageTypes.INITIALISED});
+//postMessage({type: MessageTypes.INITIALISED});

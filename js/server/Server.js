@@ -31,14 +31,15 @@ let store = createStore(
 
 //vars
 let sendMessageToPlayer;
-let sendMessageToAllPlayers;
 let serverPhase = 'initialising';
 let gameLoopIntervalId;
 
 
-export function initialise(aSendMessageToPlayer, aSendMessageToAllPlayers) {
+export function initialise(aSendMessageToPlayer) {
   sendMessageToPlayer = aSendMessageToPlayer;
-  sendMessageToAllPlayers = aSendMessageToAllPlayers;
+
+  //Announce that the server is initialised
+  sendMessageToPlayer({type: MessageTypes.INITIALISED});
 }
 
 export function createWorld(definition) {
@@ -59,7 +60,7 @@ export function connectedPlayer(playerId, connectionData = null) {
   //are all players connected?
   const serverState = store.getState().server;
 
-  sendMessageToAllPlayers({
+  sendMessageToPlayer({
     type: MessageTypes.PLAYER_IS_CONNECTED,
     playerId,
     connectedPlayers: Object.values(serverState.players).filter(player => (player.isConnected)).map(player => ({id: player.id, name: player.name})),
@@ -72,14 +73,14 @@ export function connectedPlayer(playerId, connectionData = null) {
 }
 
 function allPlayersConnected() {
-  sendMessageToAllPlayers({
+  sendMessageToPlayer({
     type: MessageTypes.ALL_PLAYERS_CONNECTED
   });
-
+console.log('game loop started')
   //Start running the actual game
   serverPhase = 'active';
 
-  gameLoopIntervalId = setInterval(gameLoop, 1000 / 60);
+  gameLoopIntervalId = setInterval(gameLoop, 1000 / 30);
 }
 
 export function getStateForPlayer(playerId) {
@@ -110,19 +111,20 @@ export function getStateForPlayer(playerId) {
 }
 
 export function gameLoop() {
-  advanceGameTime(3600);
+  for(let i = 0; i < 1; i++) {
+    advanceGameTime(3600);
+  }
+
 
   //Send updated state to all the connected players
   const state = store.getState();
 
   objForEach(state.server.players, (player) => {
-    sendMessageToPlayer(
-      player.id,
-      {
-        type: MessageTypes.UPDATE_PLAYER_STATE,
-        data: getStateForPlayer(player.id)
-      }
-    );
+    sendMessageToPlayer({
+      playerId: player.id,
+      type: MessageTypes.UPDATE_PLAYER_STATE,
+      data: getStateForPlayer(player.id)
+    });
   });
 }
 

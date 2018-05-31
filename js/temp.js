@@ -97,14 +97,13 @@ const worldDefinition = {
 
 
 
-import * as connector from './client/workerClient';
 
 
-export function tempInitGameState(store, startGameCallback) {
+
+export function tempInitGameState(store, connector, startGameCallback) {
   connector.initialise(store, () => {
     connector.createWorld(worldDefinition);
   }, () => {
-
 
 
     //Start the game
