@@ -106,6 +106,7 @@ export function mapObjToArray(object, callback) {
   }, []);
 }
 
+//Filter func: (key, value, obj)
 export function objFilter(obj, filterFunc) {
   const filteredObj = {};
 

@@ -70,9 +70,9 @@ monitorDevicePixelRatio(store, 'device.pixelRatio', setPixelRatio);
 
 
 import {tempInitGameState} from './temp';
+import {tick} from './reducers/ui';
 
-
-tempInitGameState(() => {
+tempInitGameState(store, () => {
   //Initialise the app
   render(
     <Provider store={store}>
@@ -80,6 +80,11 @@ tempInitGameState(() => {
     </Provider>,
     document.getElementById('app')
   );
+
+  //Start the tick
+  setInterval(() => {
+    store.dispatch(tick())
+  }, (1000 / 60))
 });
 
 

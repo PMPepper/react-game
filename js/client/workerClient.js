@@ -1,7 +1,13 @@
 import MessageTypes from '../consts/MessageTypes';
 
+//Reducers
+import {update} from '../reducers/gameClient';
+
+
+let store;
 let worker = null;
 let isLoadedCallback = null;
+let startGameCallback = null;
 let messageIdCounter = 1;
 const responses = {};
 
@@ -29,15 +35,18 @@ function onmessage(e) {
     case MessageTypes.ALL_PLAYERS_CONNECTED:
       console.log('all players are connected - start the game!!!!');
 
+      startGameCallback();
       break;
     default:
 
   }
 }
 
-export function initialise(aIsLoadedCallback, {path = '../js/worker.js'} = {}) {
+export function initialise(aStore, aIsLoadedCallback, aStartGameCallback, {path = '../js/worker.js'} = {}) {
+  store = aStore;
   worker = new Worker(path);
   isLoadedCallback = aIsLoadedCallback;
+  startGameCallback = aStartGameCallback;
 
   worker.onmessage = onmessage;
 }
@@ -53,6 +62,8 @@ export function createWorld(definition) {
       Object.values(data.players).forEach(player => {
         sendMessage(MessageTypes.CONNECT_PLAYER, {playerId: player.id}, (message) => {
           console.log('on player connect: ', message.data)
+
+          store.dispatch(update(player.id, message.data));
         });
       });
     }

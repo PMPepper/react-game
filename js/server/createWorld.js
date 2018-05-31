@@ -14,7 +14,7 @@ import {addPlayer} from '../reducers/game/players';
 import {addFaction} from '../reducers/game/factions';
 import {addPlayerToFaction} from '../reducers/game/factionPlayer';
 import {addSystem} from '../reducers/game/systems';
-import {addSystemBody} from '../reducers/game/systemBodys';
+import {addSystemBody} from '../reducers/game/systemBodies';
 import {addSystemToFaction} from '../reducers/game/factionSystem';
 import {addSystemBodyToFaction} from '../reducers/game/factionSystemBody';
 import {setTime} from '../reducers/game';
@@ -37,7 +37,7 @@ export default function createWorld(store, definition) {
   function createSystem(definition) {
     const systemId = (systemIdCounter++).toString();
     const primaryBodyId = bodyIdCounter;
-    const systemBodysData = {};
+    const systemBodiesData = {};
     const systemBodyNames = {};
 
     const nameToId = {};
@@ -54,23 +54,23 @@ export default function createWorld(store, definition) {
       const parentId = definition.parentId || (parent ? nameToId[parent] : null);
 
 
-      systemBodysData[bodyId] = {
+      systemBodiesData[bodyId] = {
         ...data,
         parentId,
         children: [],
         systemId: systemId.toString(),
-        orbit: data.orbit ? normaliseOrbit(data.orbit, data, systemBodysData[parentId]) : null
+        orbit: data.orbit ? normaliseOrbit(data.orbit, data, systemBodiesData[parentId]) : null
       };
 
       //add to parents children list (if appropriate)
       if(parentId) {
-        systemBodysData[parentId].children.push(bodyId);
+        systemBodiesData[parentId].children.push(bodyId);
       }
     })
 
     //Now record the system bodies
-    Object.keys(systemBodysData).forEach((bodyId) => {
-      store.dispatch(addSystemBody(bodyId, systemBodysData[bodyId]));
+    Object.keys(systemBodiesData).forEach((bodyId) => {
+      store.dispatch(addSystemBody(bodyId, systemBodiesData[bodyId]));
     });
 
     return {

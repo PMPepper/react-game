@@ -23,8 +23,9 @@ const UPDATE = 'gameClient/UPDATE'
 // Actions     //
 /////////////////
 
-export function update(data) {
+export function update(playerId, data) {
   return {
+    playerId,
     type: UPDATE,
     data
   };

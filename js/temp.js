@@ -47,7 +47,7 @@ const worldDefinition = {
     }]
   }],
 
-  
+
   players: [
     {
       name: 'Billy',
@@ -56,6 +56,11 @@ const worldDefinition = {
     },
     {
       name: 'Willy',
+      faction: 'Martians',
+      role: FactionPlayerTypes.OWNER
+    },
+    {
+      name: 'Dilly',
       faction: 'Martians',
       role: FactionPlayerTypes.OWNER
     }
@@ -77,12 +82,17 @@ const worldDefinition = {
 
 
 import * as connector from './client/workerClient';
+import {setControlledFaction} from './reducers/ui';
 
-export function tempInitGameState(startGameCallback) {
-  connector.initialise(() => {
+export function tempInitGameState(store, startGameCallback) {
+  connector.initialise(store, () => {
     connector.createWorld(worldDefinition);
 
     //startGameCallback();
+  }, () => {
+    store.dispatch(setControlledFaction('2'));
+
+    startGameCallback();
   });
 }
 

@@ -1,7 +1,15 @@
 //Array functions
 //get the set of values that are in both arrays
 export function arrayIntersection(a, b) {
-  return [...new Set(a)].filter(x => new Set(b).has(x));
+  const setB = new Set(b);
+
+  return [...new Set(a)].filter(x => setB.has(x));
+}
+
+export function arrayHasIntersection(a, b) {
+  const setB = new Set(b);
+
+  return [...new Set(a)].some(x => setB.has(x));
 }
 
 //does array 2 contain all the same values as array 1

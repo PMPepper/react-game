@@ -1,4 +1,4 @@
-console.log('reducer/game/systemBodys');
+console.log('reducer/game/systemBodies');
 
 //////////////////
 // Imports      //

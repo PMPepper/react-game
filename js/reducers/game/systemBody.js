@@ -65,7 +65,7 @@ const colonisableSystemBodyTypes = [SystemBodyTypes.PLANET, SystemBodyTypes.ASTE
 // Action types //
 //////////////////
 
-export const ADD_SYSTEM_BODY = 'systemBodys/ADD_SYSTEM_BODY';
+export const ADD_SYSTEM_BODY = 'systemBodies/ADD_SYSTEM_BODY';
 
 export const UPDATE_SYSTEM_BODY_POSITION = 'systemBody/UPDATE_SYSTEM_BODY_POSITION';
 export const UPDATE_SYSTEM_BODY_ENVIRONMENT = 'systemBody/UPDATE_SYSTEM_BODY_ENVIRONMENT';
@@ -75,20 +75,20 @@ export const UPDATE_SYSTEM_BODY_ENVIRONMENT = 'systemBody/UPDATE_SYSTEM_BODY_ENV
 // Actions     //
 /////////////////
 
-export function updateSystemBodyPosition(time, systemBodys) {
+export function updateSystemBodyPosition(time, systemBodies) {
   return {
     type: UPDATE_SYSTEM_BODY_POSITION,
     time,
-    systemBodys
+    systemBodies
   };
 };
 
 
-export function updateSystemBodyEnvironment(time, systemBodys) {
+export function updateSystemBodyEnvironment(time, systemBodies) {
   return {
     type: UPDATE_SYSTEM_BODY_ENVIRONMENT,
     time,
-    systemBodys
+    systemBodies
   };
 };
 
@@ -117,12 +117,12 @@ export default function(state = DEFAULT_STATE, action) {
     case UPDATE_SYSTEM_BODY_POSITION:
       return {
         ...state,
-        ...systemBodyPositionAtTime(state, action.time, action.systemBodys)
+        ...systemBodyPositionAtTime(state, action.time, action.systemBodies)
       };
     case UPDATE_SYSTEM_BODY_ENVIRONMENT:
       return {
         ...state,
-        surfaceTemperature: systemBodySurfaceTemperature(state, action.systemBodys)
+        surfaceTemperature: systemBodySurfaceTemperature(state, action.systemBodies)
         //TODO anything else that will change, e.g. surface temperature
       };
   }
