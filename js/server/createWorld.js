@@ -79,6 +79,7 @@ export default function createWorld(store, definition) {
       nameToId
     };
   }
+  //end create system
 
   definition.factions.forEach(factionDefinition => {
     const factionId = (factionIdCounter++).toString();
@@ -116,12 +117,16 @@ export default function createWorld(store, definition) {
   definition.players.forEach(playerDefinition => {
     const playerId = (playerIdCounter++).toString();
 
-    if(!factionIdByName.hasOwnProperty(playerDefinition.faction)) {
-      throw new Error('Player must belong to known faction');
-    }
-
     store.dispatch(addPlayer(playerId, {name: playerDefinition.name}));
-    store.dispatch(addPlayerToFaction(playerId, factionIdByName[playerDefinition.faction], playerDefinition.role))
+
+    playerDefinition.factions.forEach((factionDefinition) => {
+      if(!factionIdByName.hasOwnProperty(factionDefinition.name)) {
+        throw new Error('Player must belong to known faction');
+      }
+
+      //link player to faction
+      store.dispatch(addPlayerToFaction(playerId, factionIdByName[factionDefinition.name], factionDefinition.role))
+    });
   });
 
   store.dispatch(setTime(new Date(definition.startDate).valueOf() / 1000));

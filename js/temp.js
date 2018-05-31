@@ -51,19 +51,35 @@ const worldDefinition = {
   players: [
     {
       name: 'Billy',
-      faction: 'Humans',
-      role: FactionPlayerTypes.OWNER
+      factions: [
+        {
+          name: 'Humans',
+          role: FactionPlayerTypes.OWNER
+        },
+        {
+          name: 'Martians',
+          role: FactionPlayerTypes.OWNER
+        }
+      ]
     },
-    {
+    /*{
       name: 'Willy',
-      faction: 'Martians',
-      role: FactionPlayerTypes.OWNER
+      factions: [
+        {
+          name: 'Martians',
+          role: FactionPlayerTypes.OWNER
+        }
+      ]
     },
     {
       name: 'Dilly',
-      faction: 'Martians',
-      role: FactionPlayerTypes.OWNER
-    }
+      factions: [
+        {
+          name: 'Martians',
+          role: FactionPlayerTypes.OWNER
+        }
+      ]
+    }*/
   ],
 
   //To be implemented
@@ -90,7 +106,7 @@ export function tempInitGameState(store, startGameCallback) {
 
     //startGameCallback();
   }, () => {
-    store.dispatch(setControlledFaction('2'));
+    store.dispatch(setControlledFaction('1'));
 
     startGameCallback();
   });
