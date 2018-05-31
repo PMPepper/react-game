@@ -1,3 +1,5 @@
+console.log('createWorld');
+
 import systems from '../data/systems'
 
 //Constants
@@ -12,7 +14,7 @@ import {addPlayer} from '../reducers/game/players';
 import {addFaction} from '../reducers/game/factions';
 import {addPlayerToFaction} from '../reducers/game/factionPlayer';
 import {addSystem} from '../reducers/game/systems';
-import {addSystemBody} from '../reducers/game/systemBodies';
+import {addSystemBody} from '../reducers/game/systemBodys';
 import {addSystemToFaction} from '../reducers/game/factionSystem';
 import {addSystemBodyToFaction} from '../reducers/game/factionSystemBody';
 import {setTime} from '../reducers/game';
@@ -35,7 +37,7 @@ export default function createWorld(store, definition) {
   function createSystem(definition) {
     const systemId = (systemIdCounter++).toString();
     const primaryBodyId = bodyIdCounter;
-    const systemBodiesData = {};
+    const systemBodysData = {};
     const systemBodyNames = {};
 
     const nameToId = {};
@@ -52,23 +54,23 @@ export default function createWorld(store, definition) {
       const parentId = definition.parentId || (parent ? nameToId[parent] : null);
 
 
-      systemBodiesData[bodyId] = {
+      systemBodysData[bodyId] = {
         ...data,
         parentId,
         children: [],
         systemId: systemId.toString(),
-        orbit: data.orbit ? normaliseOrbit(data.orbit, data, systemBodiesData[parentId]) : null
+        orbit: data.orbit ? normaliseOrbit(data.orbit, data, systemBodysData[parentId]) : null
       };
 
       //add to parents children list (if appropriate)
       if(parentId) {
-        systemBodiesData[parentId].children.push(bodyId);
+        systemBodysData[parentId].children.push(bodyId);
       }
     })
 
     //Now record the system bodies
-    Object.keys(systemBodiesData).forEach((bodyId) => {
-      store.dispatch(addSystemBody(bodyId, systemBodiesData[bodyId]));
+    Object.keys(systemBodysData).forEach((bodyId) => {
+      store.dispatch(addSystemBody(bodyId, systemBodysData[bodyId]));
     });
 
     return {

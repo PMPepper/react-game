@@ -6,6 +6,10 @@ function sendMessageToPlayer(playerId, message) {
   postMessage({playerId, ...message});
 }
 
+function sendMessageToAllPlayers(message) {
+  postMessage(message);
+}
+
 function confirmMessageComplete(message, data = null) {
   if(message.id) {
     postMessage({
@@ -16,7 +20,7 @@ function confirmMessageComplete(message, data = null) {
   }
 };
 
-Server.initialise(sendMessageToPlayer)
+Server.initialise(sendMessageToPlayer, sendMessageToAllPlayers);
 
 //Process recieved messages
 onmessage = function(e) {
@@ -29,11 +33,14 @@ onmessage = function(e) {
       confirmMessageComplete(message, createdFactions);
       return;
     case MessageTypes.CONNECT_PLAYER:
+
       //Other server connectors would need to record details about the connected
       //player, but worker always sends the messages to the same client
+      confirmMessageComplete(message, Server.getStateForPlayer(message.data.playerId));
+
+      //Mark player as connected
       Server.connectedPlayer(message.data.playerId);
 
-      confirmMessageComplete(message);
       return;
     case MessageTypes.ADD_PLAYER_ORDERS:
       Server.addPlayerOrders(message.data.playerId, message.data.orders);

@@ -1,9 +1,11 @@
+console.log('reducer/game/systems');
+
 //////////////////
 // Imports      //
 //////////////////
 
 import {objectReducer} from '../../helpers/Redux';
-import system, {DEFAULT_STATE as DEFAULT_SYSTEM_STATE} from './system';
+import system, {DEFAULT_STATE as DEFAULT_SYSTEM_STATE, ADD_SYSTEM} from './system';
 
 
 //////////////////
@@ -16,7 +18,7 @@ import system, {DEFAULT_STATE as DEFAULT_SYSTEM_STATE} from './system';
 // Action types //
 //////////////////
 
-export const ADD_SYSTEM = 'systems/ADD_SYSTEM';
+
 
 
 /////////////////

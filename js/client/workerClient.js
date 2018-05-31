@@ -23,6 +23,13 @@ function onmessage(e) {
       //Tidy up
       delete responses[message.replyId];
       break;
+    case MessageTypes.PLAYER_IS_CONNECTED:
+      console.log('Player is connected: ', message.playerId, message.connectedPlayers, message.pendingPlayers);
+      break;
+    case MessageTypes.ALL_PLAYERS_CONNECTED:
+      console.log('all players are connected - start the game!!!!');
+
+      break;
     default:
 
   }
@@ -45,11 +52,9 @@ export function createWorld(definition) {
       //now connect all players
       Object.values(data.players).forEach(player => {
         sendMessage(MessageTypes.CONNECT_PLAYER, {playerId: player.id}, (message) => {
-          console.log('player connected: ', message);
+          console.log('on player connect: ', message.data)
         });
       });
-
-      //TODO wait until all players are connected
     }
   );
 }

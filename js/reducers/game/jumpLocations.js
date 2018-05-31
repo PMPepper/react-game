@@ -1,9 +1,11 @@
+console.log('reducer/game/jumpLocations');
+
 //////////////////
 // Imports      //
 //////////////////
 
 import {objectReducer} from '../../helpers/Redux';
-import jumpLocation, {DEFAULT_STATE as DEFAULT_JUMP_LOCATION_STATE} from './jumpLocation';
+import jumpLocation, {DEFAULT_STATE as DEFAULT_JUMP_LOCATION_STATE, ADD_JUMP_LOCATION} from './jumpLocation';
 
 
 //////////////////
@@ -17,7 +19,7 @@ const DEFAULT_STATE = {};
 // Action types //
 //////////////////
 
-export const ADD_JUMP_LOCATION = 'systemBodies/ADD_JUMP_LOCATION';
+
 
 
 /////////////////

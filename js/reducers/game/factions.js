@@ -1,3 +1,5 @@
+console.log('reducer/game/factions');
+
 //////////////////
 // Imports      //
 //////////////////

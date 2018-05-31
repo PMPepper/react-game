@@ -1,8 +1,9 @@
+console.log('reducer/game/player');
+
 //////////////////
 // Imports      //
 //////////////////
 
-import {ADD_PLAYER} from './players';
 
 
 //////////////////
@@ -19,7 +20,7 @@ export const DEFAULT_STATE = {
 // Action types //
 //////////////////
 
-
+export const ADD_PLAYER = 'players/ADD_PLAYER';
 
 
 /////////////////

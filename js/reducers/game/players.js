@@ -1,9 +1,11 @@
+console.log('reducer/game/players');
+
 //////////////////
 // Imports      //
 //////////////////
 
 import {objectReducer} from '../../helpers/Redux';
-import player, {DEFAULT_STATE as DEFAULT_PLAYER_STATE} from './player';
+import player, {DEFAULT_STATE as DEFAULT_PLAYER_STATE, ADD_PLAYER} from './player';
 
 
 //////////////////
@@ -16,7 +18,7 @@ import player, {DEFAULT_STATE as DEFAULT_PLAYER_STATE} from './player';
 // Action types //
 //////////////////
 
-export const ADD_PLAYER = 'players/ADD_PLAYER';
+
 
 
 /////////////////

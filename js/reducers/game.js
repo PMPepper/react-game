@@ -1,17 +1,20 @@
+console.log('reducer/game');
+
 //////////////////
 // Imports      //
 //////////////////
 
 import {combineReducers} from 'redux';
+
+import {updateSystemBodyPosition, updateSystemBodyEnvironment} from './game/systemBody';
+import systemBodys from './game/systemBodys';
 import jumpLocations from './game/jumpLocations';
 import players from './game/players';
 import factions from './game/factions';
 import factionPlayer from './game/factionPlayer';
 import systems from './game/systems';
-import systemBodies from './game/systemBodies';
 import factionSystem from './game/factionSystem';
 import factionSystemBody from './game/factionSystemBody';
-import {updateSystemBodyPosition, updateSystemBodyEnvironment} from './game/systemBody';
 
 
 //////////////////
@@ -35,8 +38,8 @@ export const SET_TIME = 'game/SET_TIME';
 export function setTime(time) {
   return (dispatch, getState) => {
     dispatch(_setTime(time));
-    dispatch(updateSystemBodyPosition(time, getState().game.systemBodies));
-    dispatch(updateSystemBodyEnvironment(time, getState().game.systemBodies));
+    dispatch(updateSystemBodyPosition(time, getState().game.systemBodys));
+    dispatch(updateSystemBodyEnvironment(time, getState().game.systemBodys));
   }
 }
 
@@ -66,7 +69,7 @@ export default combineReducers({
   factions,
   factionPlayer,
   systems,
-  systemBodies,
+  systemBodys,
   factionSystem,
   factionSystemBody,
   time: (state = 0, action) => {

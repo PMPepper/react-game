@@ -1,9 +1,9 @@
+console.log('reducer/game/systemBody');
+
 //////////////////
 // Imports      //
 //////////////////
 
-import {ADD_SYSTEM_BODY} from './systemBodies';
-import {SET_TIME} from '../game';
 
 import {volumeOfSphere} from '../../helpers/Maths';
 import {gravityAtDistanceFromMass, escapeVelocity} from '../../helpers/Physics';
@@ -65,6 +65,8 @@ const colonisableSystemBodyTypes = [SystemBodyTypes.PLANET, SystemBodyTypes.ASTE
 // Action types //
 //////////////////
 
+export const ADD_SYSTEM_BODY = 'systemBodys/ADD_SYSTEM_BODY';
+
 export const UPDATE_SYSTEM_BODY_POSITION = 'systemBody/UPDATE_SYSTEM_BODY_POSITION';
 export const UPDATE_SYSTEM_BODY_ENVIRONMENT = 'systemBody/UPDATE_SYSTEM_BODY_ENVIRONMENT';
 
@@ -73,20 +75,20 @@ export const UPDATE_SYSTEM_BODY_ENVIRONMENT = 'systemBody/UPDATE_SYSTEM_BODY_ENV
 // Actions     //
 /////////////////
 
-export function updateSystemBodyPosition(time, systemBodies) {
+export function updateSystemBodyPosition(time, systemBodys) {
   return {
     type: UPDATE_SYSTEM_BODY_POSITION,
     time,
-    systemBodies
+    systemBodys
   };
 };
 
 
-export function updateSystemBodyEnvironment(time, systemBodies) {
+export function updateSystemBodyEnvironment(time, systemBodys) {
   return {
     type: UPDATE_SYSTEM_BODY_ENVIRONMENT,
     time,
-    systemBodies
+    systemBodys
   };
 };
 
@@ -115,12 +117,12 @@ export default function(state = DEFAULT_STATE, action) {
     case UPDATE_SYSTEM_BODY_POSITION:
       return {
         ...state,
-        ...systemBodyPositionAtTime(state, action.time, action.systemBodies)
+        ...systemBodyPositionAtTime(state, action.time, action.systemBodys)
       };
     case UPDATE_SYSTEM_BODY_ENVIRONMENT:
       return {
         ...state,
-        surfaceTemperature: systemBodySurfaceTemperature(state, action.systemBodies)
+        surfaceTemperature: systemBodySurfaceTemperature(state, action.systemBodys)
         //TODO anything else that will change, e.g. surface temperature
       };
   }

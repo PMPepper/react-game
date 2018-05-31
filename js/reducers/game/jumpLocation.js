@@ -1,8 +1,10 @@
+console.log('reducer/game/jumpLocation');
+
 //////////////////
 // Imports      //
 //////////////////
 
-import {ADD_JUMP_LOCATION} from './jumpLocations';
+
 
 
 //////////////////
@@ -23,7 +25,7 @@ export const DEFAULT_STATE = {
 // Action types //
 //////////////////
 
-
+export const ADD_JUMP_LOCATION = 'jumpLocation/ADD_JUMP_LOCATION';
 
 
 /////////////////

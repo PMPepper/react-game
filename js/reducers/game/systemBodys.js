@@ -1,9 +1,11 @@
+console.log('reducer/game/systemBodys');
+
 //////////////////
 // Imports      //
 //////////////////
 
 import {objectReducer} from '../../helpers/Redux';
-import systemBody, {DEFAULT_STATE as DEFAULT_SYSTEM_BODY_STATE} from './systemBody';
+import systemBody, {DEFAULT_STATE as DEFAULT_SYSTEM_BODY_STATE, ADD_SYSTEM_BODY} from './systemBody';
 
 
 //////////////////
@@ -17,7 +19,7 @@ const DEFAULT_STATE = {};
 // Action types //
 //////////////////
 
-export const ADD_SYSTEM_BODY = 'systemBodies/ADD_SYSTEM_BODY';
+
 
 
 /////////////////
@@ -41,7 +43,6 @@ export default objectReducer(DEFAULT_SYSTEM_BODY_STATE, systemBody, {
   idProp: 'id',
   edit: [ADD_SYSTEM_BODY]
 });
-
 
 ////////////////
 // Helpers    //

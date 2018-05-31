@@ -1,10 +1,18 @@
+console.log('Server');
+
 import {createStore, applyMiddleware} from 'redux';
 import {enableBatching, batchActions} from 'redux-batched-actions';
 import ReduxThunk from 'redux-thunk';
 
-import rootReducer from './rootReducer';
+//Consts
+import MessageTypes from '../consts/MessageTypes';
 
+//Methods
 import createWorldFunc from './createWorld';
+
+//Reducers
+import rootReducer from './rootReducer';
+import {playerConnected} from '../reducers/server';
 
 //Server knows nothing about how you're talking to the players, it just has methods called and sends messages which get handled by the 'connectors', e.g. worker
 
@@ -18,11 +26,13 @@ let store = createStore(
 
 //vars
 let sendMessageToPlayer;
+let sendMessageToAllPlayers;
 let serverPhase = 'initialising';
 
 
-export function initialise(aSendMessageToPlayer) {
+export function initialise(aSendMessageToPlayer, aSendMessageToAllPlayers) {
   sendMessageToPlayer = aSendMessageToPlayer;
+  sendMessageToAllPlayers = aSendMessageToAllPlayers;
 }
 
 export function createWorld(definition) {
@@ -36,8 +46,29 @@ export function createWorld(definition) {
   serverPhase = 'connecting';
 }
 
-export function connectedPlayer(playerId) {
-  //mark player as connected..
+export function connectedPlayer(playerId, connectionData = null) {
+  //mark player as connected, once all connected change game phase
+  store.dispatch(playerConnected(playerId, connectionData));
+
+  //are all players connected?
+  const serverState = store.getState().server;
+
+  sendMessageToAllPlayers({
+    type: MessageTypes.PLAYER_IS_CONNECTED,
+    playerId,
+    connectedPlayers: Object.values(serverState).filter(player => (player.isConnected)).map(player => ({id: player.id, name: player.name})),
+    pendingPlayers: Object.values(serverState).filter(player => (!player.isConnected)).map(player => ({id: player.id, name: player.name}))
+  });
+
+  if(Object.values(serverState).every(player => (player.isConnected))) {
+    allPlayersConnected();
+  }
+}
+
+function allPlayersConnected() {
+  sendMessageToAllPlayers({
+    type: MessageTypes.ALL_PLAYERS_CONNECTED
+  });
 }
 
 export function getStateForPlayer(playerId) {
