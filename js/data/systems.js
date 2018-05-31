@@ -1,6 +1,6 @@
-//import solAsteroids from './solAsteroids.json';
+import solAsteroids from './solAsteroids.json';
 
-const solAsteroids = [];
+//const solAsteroids = [];
 
 /*
 example random asteroid belt:

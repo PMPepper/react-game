@@ -4,6 +4,8 @@ console.log('reducers/server');
 // Imports      //
 //////////////////
 
+import {combineReducers} from 'redux';
+
 import {ADD_PLAYER} from './game/player';
 
 
@@ -19,6 +21,7 @@ export const DEFAULT_STATE = {};
 //////////////////
 
 export const PLAYER_CONNECTED = 'server/PLAYER_CONNECTED';
+export const SET_PLAYER_GAME_SPEED = 'server/SET_PLAYER_GAME_SPEED';
 
 
 /////////////////
@@ -29,7 +32,29 @@ export function playerConnected(playerId, connectionData = null) {
   return {
     type: PLAYER_CONNECTED,
     id: playerId,
+    gameSpeed: 0,
     connectionData
+  };
+}
+
+export function setPlayerGameSpeed(playerId, gameSpeed) {
+  return (dispatch, getState) => {
+    dispatch(_setPlayerGameSpeed(playerId, gameSpeed));
+
+
+    //get other players game speeds
+    const allPlayers = getState().server.players;
+
+    //TODO Find lowest and apply
+    console.log('setPlayerGameSpeed: ', allPlayers);
+  }
+}
+
+function _setPlayerGameSpeed(playerId, gameSpeed) {
+  return {
+    type: SET_PLAYER_GAME_SPEED,
+    id: playerId,
+    gameSpeed
   };
 }
 
@@ -38,37 +63,66 @@ export function playerConnected(playerId, connectionData = null) {
 // Reducer/s  //
 ////////////////
 
-export default function (state = DEFAULT_STATE, action) {
-  if(action.type === ADD_PLAYER) {
-    return {
-      ...state,
-      [action.id]: {
-        ...action.data,
-        id: action.id,
-        isConnected: false,
-        connectionData: null
-      }
-    };
-  } else if(action.type === PLAYER_CONNECTED) {
-    const player = state[action.id];
-
-    if(!player) {
-      return state;
-    }
-
-    return {
-      ...state,
-      [action.id]: {
-        ...player,
-        isConnected: true,
-        connectionData: action.connectionData
-      }
-    }
-  }
+function gameSpeedReducer(state = 0, action) {
+  //TODO
 
   return state;
 }
 
+function playersReducer(state = DEFAULT_STATE, action) {
+  let player;
+
+  switch(action.type) {
+    case ADD_PLAYER:
+      return {
+        ...state,
+        [action.id]: {
+          ...action.data,
+          id: action.id,
+          isConnected: false,
+          gameSpeed: action.gameSpeed,
+          connectionData: null
+        }
+      };
+    case PLAYER_CONNECTED:
+      player = state[action.id];
+
+      if(!player) {
+        return state;
+      }
+
+      return {
+        ...state,
+        [action.id]: {
+          ...player,
+          isConnected: true,
+          connectionData: action.connectionData
+        }
+      }
+    case SET_PLAYER_GAME_SPEED:
+      player = state[action.id];
+
+      if(!player) {
+        return state;
+      }
+
+      return {
+        ...state,
+        [action.id]: {
+          ...player,
+          gameSpeed: action.gameSpeed
+        }
+      }
+  }
+
+
+  return state;
+}
+
+export default combineReducers({
+  gameSpeed: gameSpeedReducer,
+  players: playersReducer
+});
 
 ////////////////
 // Helpers    //

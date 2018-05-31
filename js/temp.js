@@ -98,16 +98,16 @@ const worldDefinition = {
 
 
 import * as connector from './client/workerClient';
-import {setControlledFaction} from './reducers/ui';
+
 
 export function tempInitGameState(store, startGameCallback) {
   connector.initialise(store, () => {
     connector.createWorld(worldDefinition);
-
-    //startGameCallback();
   }, () => {
-    store.dispatch(setControlledFaction('1'));
 
+
+
+    //Start the game
     startGameCallback();
   });
 }

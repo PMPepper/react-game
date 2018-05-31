@@ -13,9 +13,10 @@ import createWorldFunc from './createWorld';
 //Reducers
 import rootReducer from './rootReducer';
 import {playerConnected} from '../reducers/server';
+import {advanceTime} from '../reducers/game';
 
 //Helpers
-import {objFilter, mapObj} from '../helpers/Object';
+import {objFilter, mapObj, objForEach} from '../helpers/Object';
 import {arrayHasIntersection} from '../helpers/Array';
 
 //Server knows nothing about how you're talking to the players, it just has methods called and sends messages which get handled by the 'connectors', e.g. worker
@@ -32,6 +33,7 @@ let store = createStore(
 let sendMessageToPlayer;
 let sendMessageToAllPlayers;
 let serverPhase = 'initialising';
+let gameLoopIntervalId;
 
 
 export function initialise(aSendMessageToPlayer, aSendMessageToAllPlayers) {
@@ -60,11 +62,11 @@ export function connectedPlayer(playerId, connectionData = null) {
   sendMessageToAllPlayers({
     type: MessageTypes.PLAYER_IS_CONNECTED,
     playerId,
-    connectedPlayers: Object.values(serverState).filter(player => (player.isConnected)).map(player => ({id: player.id, name: player.name})),
-    pendingPlayers: Object.values(serverState).filter(player => (!player.isConnected)).map(player => ({id: player.id, name: player.name}))
+    connectedPlayers: Object.values(serverState.players).filter(player => (player.isConnected)).map(player => ({id: player.id, name: player.name})),
+    pendingPlayers: Object.values(serverState.players).filter(player => (!player.isConnected)).map(player => ({id: player.id, name: player.name}))
   });
 
-  if(Object.values(serverState).every(player => (player.isConnected))) {
+  if(Object.values(serverState.players).every(player => (player.isConnected))) {
     allPlayersConnected();
   }
 }
@@ -73,6 +75,11 @@ function allPlayersConnected() {
   sendMessageToAllPlayers({
     type: MessageTypes.ALL_PLAYERS_CONNECTED
   });
+
+  //Start running the actual game
+  serverPhase = 'active';
+
+  gameLoopIntervalId = setInterval(gameLoop, 1000 / 60);
 }
 
 export function getStateForPlayer(playerId) {
@@ -80,6 +87,7 @@ export function getStateForPlayer(playerId) {
   const playerFactionIds = Object.keys(gameState.factionPlayer.playerFaction[playerId]);
 
   return {
+    playerId,
     time: gameState.time,
 
     factions: objFilter(gameState.factions, (key, value, obj) => (playerFactionIds.includes(key))),
@@ -101,6 +109,30 @@ export function getStateForPlayer(playerId) {
   };
 }
 
+export function gameLoop() {
+  advanceGameTime(3600);
+
+  //Send updated state to all the connected players
+  const state = store.getState();
+
+  objForEach(state.server.players, (player) => {
+    sendMessageToPlayer(
+      player.id,
+      {
+        type: MessageTypes.UPDATE_PLAYER_STATE,
+        data: getStateForPlayer(player.id)
+      }
+    );
+  });
+}
+
+export function advanceGameTime(amount) {
+  store.dispatch(advanceTime(amount));
+}
+
+
+
+//Internal helpers
 function filterStateByFactions(factionIds, state, factionsStates) {
 
   return objFilter(state, (id, value, obj) => {

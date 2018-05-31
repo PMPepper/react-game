@@ -120,3 +120,9 @@ export function objFilter(obj, filterFunc) {
 
   return filteredObj;
 }
+
+export function objForEach(obj, callback) {
+  for(let i = 0, values = Object.values(obj); i < values.length; i++) {
+    callback(values[i]);
+  }
+}

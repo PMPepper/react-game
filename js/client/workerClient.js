@@ -37,6 +37,8 @@ function onmessage(e) {
 
       startGameCallback();
       break;
+    case MessageTypes.UPDATE_PLAYER_STATE:
+      store.dispatch(update(message.playerId, message.data));
     default:
 
   }

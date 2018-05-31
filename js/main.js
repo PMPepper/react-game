@@ -29,6 +29,8 @@ import Game from './components/containers/Game';
 import {setCulture} from './reducers/localisation';
 import {setPixelRatio} from './reducers/device';
 
+import {setControlledFaction} from './reducers/ui';
+
 //localisation
 import lang_enGB from './data/lang/en-GB.json';
 
@@ -81,10 +83,18 @@ tempInitGameState(store, () => {
     document.getElementById('app')
   );
 
-  //Start the tick
+  //set initial controlled faction
+  const state = store.getState();
+  const factionIds = Object.keys(state.game.factionPlayer.playerFaction[state.game.playerId]);
+
+  store.dispatch(setControlledFaction(factionIds[0]));
+
+  //Start the ui tick
   setInterval(() => {
     store.dispatch(tick())
-  }, (1000 / 60))
+  }, (1000 / 60));
+
+  
 });
 
 
