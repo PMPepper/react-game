@@ -2,8 +2,8 @@ console.log('rootReducer');
 
 import {combineReducers} from 'redux';
 
-import game from '../reducers/game';
-import server from '../reducers/server';
+import game from './game';
+import server from './server';
 
 
 const reducer = combineReducers({

@@ -1,3 +1,5 @@
+//Special server connector for using a web worker for the server
+
 import * as Server from './server/Server';
 import MessageTypes from './consts/MessageTypes';
 

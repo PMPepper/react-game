@@ -1,4 +1,4 @@
-import FactionPlayerTypes from './consts/FactionPlayerTypes';
+import FactionPlayerTypes from '../consts/FactionPlayerTypes';
 
 const worldDefinition = {
   startDate: '2000-01-01T00:00:00',

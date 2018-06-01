@@ -11,7 +11,7 @@ import MessageTypes from '../consts/MessageTypes';
 import createWorldFunc from './createWorld';
 
 //Reducers
-import rootReducer from './rootReducer';
+import rootReducer from '../reducers/serverRootReducer';
 import {playerConnected} from '../reducers/server';
 import {advanceTime} from '../reducers/game';
 

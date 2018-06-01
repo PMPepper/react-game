@@ -17,7 +17,7 @@ import {Provider} from 'react-redux'
 import {createStore, applyMiddleware} from 'redux';
 import {enableBatching} from 'redux-batched-actions';
 import ReduxThunk from 'redux-thunk';
-import rootReducer from './RootReducer'
+import rootReducer from './reducers/clientRootReducer'
 import {setDefaultStore, subscribe} from './helpers/Redux'
 import {createLogger} from 'redux-logger';//DEV
 
@@ -71,10 +71,10 @@ monitorDevicePixelRatio(store, 'device.pixelRatio', setPixelRatio);
 
 
 
-import {tempInitGameState} from './temp';
+import {tempInitGameState} from './temp/temp';
 import {tick} from './reducers/ui';
-//import * as connector from './connectors/workerConnector';
-import * as connector from './connectors/localConnector';
+import * as connector from './connectors/workerConnector';
+//import * as connector from './connectors/localConnector';
 
 tempInitGameState(store, connector, () => {
   //Initialise the app
