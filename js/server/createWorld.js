@@ -21,6 +21,13 @@ import {setTime} from '../reducers/game';
 
 
 export default function createWorld(store, definition) {
+  switch(definition.type) {
+    case 'new':
+      return createNewWorld(store, definition);
+  }
+}
+
+function createNewWorld(store, definition) {
   console.log('Server.createWorld: ', definition);
 
   let factionIdCounter = 1;
@@ -137,6 +144,7 @@ export default function createWorld(store, definition) {
   console.log('createWorld state: ', state);
 
   return {
+    name: definition.gameName,
     factions: state.game.factions,
     players: state.game.players
   }

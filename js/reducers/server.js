@@ -28,12 +28,11 @@ export const SET_PLAYER_GAME_SPEED = 'server/SET_PLAYER_GAME_SPEED';
 // Actions     //
 /////////////////
 
-export function playerConnected(playerId, connectionData = null) {
+export function playerConnected(playerId) {
   return {
     type: PLAYER_CONNECTED,
     id: playerId,
-    gameSpeed: 0,
-    connectionData
+    gameSpeed: 0
   };
 }
 
@@ -95,8 +94,7 @@ function playersReducer(state = DEFAULT_STATE, action) {
         ...state,
         [action.id]: {
           ...player,
-          isConnected: true,
-          connectionData: action.connectionData
+          isConnected: true
         }
       }
     case SET_PLAYER_GAME_SPEED:

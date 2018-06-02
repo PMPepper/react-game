@@ -1,6 +1,8 @@
 export default Object.freeze({
-  INITIALISED: 'initialised',
+  //INITIALISED: 'initialised',
   CREATE_WORLD: 'createWorld',
+
+
   CONNECT_PLAYER: 'connectPlayer',
   PLAYER_IS_CONNECTED: 'playerIsConnected',
   ALL_PLAYERS_CONNECTED: 'allPlayersConnected',

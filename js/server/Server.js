@@ -19,119 +19,159 @@ import {advanceTime} from '../reducers/game';
 import {objFilter, mapObj, objForEach} from '../helpers/Object';
 import {arrayHasIntersection} from '../helpers/Array';
 
+
+
 //Server knows nothing about how you're talking to the players, it just has methods called and sends messages which get handled by the 'connectors', e.g. worker
 
-//Create the store
-const middlewares = [ReduxThunk];
+export default class Server {
+  /*
+  let store = null;
+  let sendMessageToClients = null;
 
-let store = createStore(
-  enableBatching(rootReducer),
-  applyMiddleware.apply(this, middlewares)
-);
+  let serverPhase = 'initialising';
+  let gameLoopIntervalId;
+  let gameName = null;
+  */
 
-//vars
-let sendMessageToPlayer;
-let serverPhase = 'initialising';
-let gameLoopIntervalId;
+  constructor() {
+    this.serverPhase = 'initialising';
 
+    const middlewares = [ReduxThunk];
 
-export function initialise(aSendMessageToPlayer) {
-  sendMessageToPlayer = aSendMessageToPlayer;
-
-  //Announce that the server is initialised
-  sendMessageToPlayer({type: MessageTypes.INITIALISED});
-}
-
-export function createWorld(definition) {
-  if(serverPhase !== 'initialising') {
-    throw new Error('Can only create world while Server is in "initialising" phase');
+    this.store = createStore(
+      enableBatching(rootReducer),
+      applyMiddleware.apply(this, middlewares)
+    );
   }
 
-  return createWorldFunc(store, definition);
+  //have recieved message from player
+  onMessage(type, data) {
+    if(this[type]) {
+      return this[type](data);
+    }
 
-  //Now waiting for players to connect
-  serverPhase = 'connecting';
-}
-
-export function connectedPlayer(playerId, connectionData = null) {
-  //mark player as connected, once all connected change game phase
-  store.dispatch(playerConnected(playerId, connectionData));
-
-  //are all players connected?
-  const serverState = store.getState().server;
-
-  sendMessageToPlayer({
-    type: MessageTypes.PLAYER_IS_CONNECTED,
-    playerId,
-    connectedPlayers: Object.values(serverState.players).filter(player => (player.isConnected)).map(player => ({id: player.id, name: player.name})),
-    pendingPlayers: Object.values(serverState.players).filter(player => (!player.isConnected)).map(player => ({id: player.id, name: player.name}))
-  });
-
-  if(Object.values(serverState.players).every(player => (player.isConnected))) {
-    allPlayersConnected();
-  }
-}
-
-function allPlayersConnected() {
-  sendMessageToPlayer({
-    type: MessageTypes.ALL_PLAYERS_CONNECTED
-  });
-console.log('game loop started')
-  //Start running the actual game
-  serverPhase = 'active';
-
-  gameLoopIntervalId = setInterval(gameLoop, 1000 / 30);
-}
-
-export function getStateForPlayer(playerId) {
-  const gameState = store.getState().game;
-  const playerFactionIds = Object.keys(gameState.factionPlayer.playerFaction[playerId]);
-
-  return {
-    playerId,
-    time: gameState.time,
-
-    factions: objFilter(gameState.factions, (key, value, obj) => (playerFactionIds.includes(key))),
-    players: gameState.players,
-
-    factionPlayer: filterFactionStateByFactions(playerFactionIds, gameState.factionPlayer, 'factionPlayer', 'playerFaction'),
-
-    //filter by faction
-    systems: filterStateByFactions(playerFactionIds, gameState.systems, gameState.factionSystem.systemFaction),
-    systemBodies: filterStateByFactions(playerFactionIds, gameState.systemBodies, gameState.factionSystemBody.systemBodyFaction),
-
-    factionSystem: filterFactionStateByFactions(playerFactionIds, gameState.factionSystem, 'factionSystem', 'systemFaction'),
-    factionSystemBody: filterFactionStateByFactions(playerFactionIds, gameState.factionSystemBody, 'factionSystemBody', 'systemBodyFaction'),
-
-    //TODO add 'known factions' (and who controls them?)
-    //TODO add 'known names' e.g. faction 1 knows what faction 2 calls a body...?
-    //TODO
-    jumpLocations: {}
-  };
-}
-
-export function gameLoop() {
-  for(let i = 0; i < 1; i++) {
-    advanceGameTime(3600);
+    console.log('Unknown message from client: ', type, data);
   }
 
+  createWorld(definition) {
+    if(this.serverPhase !== 'initialising') {
+      throw new Error('Can only create world while Server is in "initialising" phase');
+    }
 
-  //Send updated state to all the connected players
-  const state = store.getState();
+    //Create the world state
+    const worldData = createWorldFunc(this.store, definition);
 
-  objForEach(state.server.players, (player) => {
-    sendMessageToPlayer({
-      playerId: player.id,
-      type: MessageTypes.UPDATE_PLAYER_STATE,
-      data: getStateForPlayer(player.id)
+    //Now waiting for players to connect
+    this.serverPhase = 'connecting';
+
+    //Tell the client the world is created & what it's called
+    return this.gameName = worldData.name;
+  }
+
+  connectPlayer({playerName}) {
+    const store = this.store;
+    const serverState = store.getState().server;
+    const players = Object.values(serverState.players);
+
+    const player = players.find(player => (player.name === playerName));//TODO get Id from name
+
+    if(!player) {
+      throw new Error(`Player '${playerName}' not found`);
+    }
+
+    const playerId = player.id;
+
+    //mark player as connected, once all connected change game phase
+    store.dispatch(playerConnected(playerId));
+
+    //are all players connected?
+
+    //Not happy with this - need better way to ensure messages get sent in order...
+    setTimeout(() => {
+      const serverState = store.getState().server;
+      const players = Object.values(serverState.players);
+
+      //delay this until after the response has been sent
+      this.sendMessageToClients(
+        MessageTypes.PLAYER_IS_CONNECTED,
+        {
+          playerId,
+          connectedPlayers: players.filter(player => (player.isConnected)).map(player => ({id: player.id, name: player.name})),
+          pendingPlayers: players.filter(player => (!player.isConnected)).map(player => ({id: player.id, name: player.name}))
+        }
+      );
+
+      if(players.every(player => (player.isConnected))) {
+        this._allPlayersConnected();
+      }
+    }, 1000);
+
+    return {
+      playerId,
+      data: this._getStateForPlayer(playerId)
+    };
+  }
+
+  _allPlayersConnected() {
+    console.log('SERVER: allPlayersConnected');
+    this.sendMessageToClients(MessageTypes.ALL_PLAYERS_CONNECTED);
+
+    //Start running the actual game
+    this.serverPhase = 'active';
+
+    this.gameLoopIntervalId = setInterval(this._gameLoop, 1000 / 30);
+  }
+
+  _gameLoop = () => {
+    for(let i = 0; i < 1; i++) {
+      this._advanceGameTime(3600);
+    }
+
+    //Send updated state to all the connected players
+    const state = this.store.getState();
+
+    objForEach(state.server.players, (player) => {
+      this.sendMessageToClients(
+        MessageTypes.UPDATE_PLAYER_STATE,
+        {
+          playerId: player.id,
+          data: this._getStateForPlayer(player.id)
+        }
+      );
     });
-  });
-}
+  }
 
-export function advanceGameTime(amount) {
-  store.dispatch(advanceTime(amount));
-}
+  _advanceGameTime(amount) {
+    this.store.dispatch(advanceTime(amount));
+  }
 
+  _getStateForPlayer(playerId) {
+    const gameState = this.store.getState().game;
+    const playerFactionIds = Object.keys(gameState.factionPlayer.playerFaction[playerId]);
+
+    return {
+      playerId,
+      time: gameState.time,
+
+      factions: objFilter(gameState.factions, (key, value, obj) => (playerFactionIds.includes(key))),
+      players: gameState.players,
+
+      factionPlayer: filterFactionStateByFactions(playerFactionIds, gameState.factionPlayer, 'factionPlayer', 'playerFaction'),
+
+      //filter by faction
+      systems: filterStateByFactions(playerFactionIds, gameState.systems, gameState.factionSystem.systemFaction),
+      systemBodies: filterStateByFactions(playerFactionIds, gameState.systemBodies, gameState.factionSystemBody.systemBodyFaction),
+
+      factionSystem: filterFactionStateByFactions(playerFactionIds, gameState.factionSystem, 'factionSystem', 'systemFaction'),
+      factionSystemBody: filterFactionStateByFactions(playerFactionIds, gameState.factionSystemBody, 'factionSystemBody', 'systemBodyFaction'),
+
+      //TODO add 'known factions' (and who controls them?)
+      //TODO add 'known names' e.g. faction 1 knows what faction 2 calls a body...?
+      //TODO
+      jumpLocations: {}
+    };
+  }
+}
 
 
 //Internal helpers
